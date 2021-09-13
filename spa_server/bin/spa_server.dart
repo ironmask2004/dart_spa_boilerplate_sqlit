@@ -9,7 +9,7 @@ void main(List<String> arguments) async {
   await db.open();
   print('Connected to our database');
 
-  await tokenService.start(Env.redisHost, Env.redisPort);
+  await tokenService.start(Env.redisHost, int.parse(Env.redisPort));
   print('Token Service running...');
 
   final store = db.collection('users');
@@ -29,7 +29,7 @@ void main(List<String> arguments) async {
       .addMiddleware(handleAuth(secret))
       .addHandler(app);
 
-  await serve(handler, 'localhost', port);
+  await serve(handler, 'localhost', int.parse(Env.serverPort));
 
   print('HTTP Service running on port $port');
 }
