@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="spa_server.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" nameIsGenerated="true">
+    <option name="filePath" value="$PROJECT_DIR$/spa_server/bin/spa_server.dart" />
+    <method v="2" />
+  </configuration>
+</component>
