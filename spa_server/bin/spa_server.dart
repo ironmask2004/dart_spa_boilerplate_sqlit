@@ -1,18 +1,27 @@
+import 'package:path/path.dart';
 import 'package:spa_server/spa_server.dart';
+import 'package:spa_server/src/database_api.dart';
+import 'package:sqflite/sqflite.dart';
+
 
 void main(List<String> arguments) async {
   const secret = Env.secretKey;
   const port = Env.serverPort;
-  final db = Db(Env.mongoUrl);
+ // final db = Db(Env.mongoUrl);
+
+
   final tokenService = TokenService(RedisConnection(), secret);
 
-  await db.open();
+  //await db.open();
+  // open the database
+  Future<Database> database= openDB();
+
   print('Connected to our database');
 
   await tokenService.start(Env.redisHost, int.parse(Env.redisPort));
   print('Token Service running...');
 
-  final store = db.collection('users');
+  final store = 'users'  ;
   final app = Router();
 
   app.mount('/auth/', AuthApi(store, secret, tokenService).router);
