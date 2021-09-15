@@ -5,31 +5,45 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 
 
+class  dbSqlite_api  {
+  String  DatabasesPath='';
+  String DatabaseName = '';
+
+  late final   Database   MyDatabase;
+
+  dbSqlite_api (DatabaseName )    {
+     this.DatabaseName = DatabaseName;
+
+  }
+
+  Future<Database>  openDB() async {
+    DatabasesPath = await getDatabasesPath();
+    String path = join(DatabasesPath, DatabaseName);
+
+    print (' Open Data BAse :' + path   );
+
+        MyDatabase = await openDatabase(path, version: 1,
+          onCreate: (Database db, int version) async {
+// When creating the db, create the table
+            await db.execute(
+                'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
+          });
+      return (MyDatabase);
+
+
+  }
+
+
+
+}
+
+
 // Get a location using getDatabasesPath
 //var databasesPath = await getDatabasesPath();
 //String path = join(databasesPath, 'demo.db');
 
 // Delete the database
 //await deleteDatabase(path);
-
- Future<Database>  openDB() async {
-// open the database
-// Get a location using getDatabasesPath
-  // Get a location using getDatabasesPath
-  var databasesPath = await getDatabasesPath();
-  String path = join(databasesPath, 'spa_server.db');
- print (' Open Data BAse :' + path  + 'spa_server.db')
-  try {
-    Database Spadatabase = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-// When creating the db, create the table
-          await db.execute(
-              'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
-        });
-    return (Spadatabase);
-  }
-
-}
 
 
 
@@ -55,7 +69,6 @@ int count = await database.rawUpdate(
 ['updated name', '9876', 'some name']);
 print('updated: $count');
 */
-
 
 
 // Get the records

@@ -7,12 +7,11 @@ import 'package:sqflite/sqflite.dart';
 void main(List<String> arguments) async {
   const secret = Env.secretKey;
   const port = Env.serverPort;
- // final db = Db(Env.mongoUrl);
-
+  final db = dbSqlite_api( 'Spa_database.db');
 
   final tokenService = TokenService(RedisConnection(), secret);
 
-  //await db.open();
+  await db.openDB();
   // open the database
   Future<Database> database= openDB();
 
