@@ -150,6 +150,7 @@ class AuthApi {
         return Response(400, body: 'Refresh token is not recognised.');
       }
 
+
       // Generate new token pair
       final oldJwt = (token as JWT);
       try {
