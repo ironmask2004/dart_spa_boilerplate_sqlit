@@ -6,7 +6,7 @@ export 'package:shelf_router/shelf_router.dart';
 export 'package:redis/redis.dart';
 import 'dart:async';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqlite3/sqlite3.dart';
 export 'src/auth_api.dart';
 export 'src/user_api.dart';
 export 'src/utils.dart';

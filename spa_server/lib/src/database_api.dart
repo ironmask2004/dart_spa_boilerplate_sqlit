@@ -1,42 +1,61 @@
+import 'dart:ffi';
+import 'dart:io';
+import 'dart:convert';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'dart:async';
-//import 'dart:collection';
+import 'package:path/path.dart';
+import 'package:sqlite3/open.dart';
+import 'package:sqlite3/sqlite3.dart';
 import 'package:collection/collection.dart';
 
-
-class  dbSqlite_api  {
-  String  DatabasesPath='';
+class dbSqlite_api {
+  String DatabasesPath = '';
   String DatabaseName = '';
 
-  late final   Database   MyDatabase;
+  late final Database MyDatabase;
 
-  dbSqlite_api (DatabaseName )    {
-     this.DatabaseName = DatabaseName;
-
+    dbSqlite_api(DatabaseName) {
+    this.DatabaseName = DatabaseName;
+    MyDatabase = openDB() as Database;
   }
 
-  Future<Database>  openDB() async {
-    DatabasesPath = await getDatabasesPath();
-    String path = join(DatabasesPath, DatabaseName);
+  Future<Database> openDB() async {
+    //  DatabasesPath = await getDatabasesPath();
+    //   String path = join(DatabasesPath, DatabaseName);
 
-    print (' Open Data BAse :' + path   );
+    print(' Open Data BAse :Spa_datBase');
 
-        MyDatabase = await openDatabase(path, version: 1,
-          onCreate: (Database db, int version) async {
-// When creating the db, create the table
-            await db.execute(
-                'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
-          });
-      return (MyDatabase);
+    open.overrideFor(OperatingSystem.linux, _openSqlit3OnLinux);
+    //database = sqlite3.openInMemory();
+    Database  MyDatabase  = sqlite3.open(DatabaseName);
+    try {
+      var stmt = MyDatabase.prepare(
+          'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
+      stmt.execute();
+      print('created table Test');
 
+      stmt.dispose();
+      stmt = MyDatabase.prepare('INSERT INTO Test (id, title) VALUES (?,?)');
+      stmt.execute([1, 'title', 999]);
+      stmt.dispose();
+    } catch (error) {
+      print(' Table Film Already exist ' + error.toString());
+    }
+    final ResultSet resultSet = MyDatabase.select('SELECT * FROM Test ');
+    resultSet.forEach((element) {
+      print(element);
+    });
 
+    return (MyDatabase);
   }
-
-
-
 }
 
+DynamicLibrary _openSqlit3OnLinux() {
+  final scriptDir = File(Platform.script.toFilePath()).parent;
+  print(scriptDir);
+  final libraryNextToScript = File('${scriptDir.path}/libsqlite3.so');
+  return DynamicLibrary.open(libraryNextToScript.path);
+}
 
 // Get a location using getDatabasesPath
 //var databasesPath = await getDatabasesPath();
@@ -44,9 +63,6 @@ class  dbSqlite_api  {
 
 // Delete the database
 //await deleteDatabase(path);
-
-
-
 
 // Insert some records in a transaction
 /*
@@ -61,7 +77,6 @@ print('inserted2: $id2');
 });
 */
 
-
 // Update some record
 /*
 int count = await database.rawUpdate(
@@ -70,22 +85,23 @@ int count = await database.rawUpdate(
 print('updated: $count');
 */
 
-
 // Get the records
-Future<List<Map>> findOneUSer( Database spaDatabase, String email) async {
-List<Map> list = await spaDatabase.rawQuery('SELECT user FROM Users where Email =' + email  );
+/*
+Future<List<Map>> findOneUSer(Database spaDatabase, String email) async {
+  List<Map> list = await spaDatabase
+      .rawQuery('SELECT user FROM Users where Email =' + email);
 //List<Map> expectedList = [
 //  {'name': 'updated name', 'id': 1, 'value': 9876, 'num': 456.789},
- // {'name': 'another name', 'id': 2, 'value': 12345678, 'num': 3.1416}
+  // {'name': 'another name', 'id': 2, 'value': 12345678, 'num': 3.1416}
 //];
 
   print(list);
 
-return (list);
+  return (list);
 //print(expectedList);
 //assert(const DeepCollectionEquality().equals(list, expectedList));
 }
-
+*/
 // Count the records
 /*
 count = Sqflite

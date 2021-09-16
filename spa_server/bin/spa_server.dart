@@ -1,19 +1,19 @@
 import 'package:path/path.dart';
 import 'package:spa_server/spa_server.dart';
 import 'package:spa_server/src/database_api.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 
 void main(List<String> arguments) async {
   const secret = Env.secretKey;
   const port = Env.serverPort;
-  final db = dbSqlite_api( 'Spa_database.db');
+  final db = dbSqlite_api( 'Spa_database.db').MyDatabase;
 
   final tokenService = TokenService(RedisConnection(), secret);
 
-  await db.openDB();
+  //await db.openDB();
   // open the database
-  Future<Database> database= openDB();
+  //Future<Database> database= openDB();
 
   print('Connected to our database');
 
@@ -23,9 +23,9 @@ void main(List<String> arguments) async {
   final store = 'users'  ;
   final app = Router();
 
-  app.mount('/auth/', AuthApi(store, secret, tokenService).router);
+  app.mount('/auth/', AuthApi(db,store, secret, tokenService).router);
 
-  app.mount('/users/', UserApi(store).router);
+  app.mount('/users/', UserApi(db,store).router);
 
   app.mount('/assets/', StaticAssetsApi('public').router);
 

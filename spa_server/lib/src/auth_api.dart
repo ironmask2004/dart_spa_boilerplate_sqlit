@@ -1,20 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:objectid/objectid.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
-import 'package:sqflite/sqflite.dart';
-
+import 'package:sqlite3/sqlite3.dart';
 import 'token_service.dart';
 import 'utils.dart';
 
 class AuthApi {
-  DbCollection store;
+  String store;
   String secret;
   TokenService tokenService;
+  Database db;
 
-  AuthApi(this.store, this.secret, this.tokenService);
+
+  AuthApi(this.db, this.store, this.secret, this.tokenService);
 
   Router get router {
     final router = Router();
@@ -35,19 +36,35 @@ class AuthApi {
       }
 
       // Ensure user is unique
-      final user = await store.findOne(where.eq('email', email));
-      if (user != null) {
+      //final user = await store_findOne(where.eq('email', email));
+
+      final ResultSet resultSet =
+      db.select('SELECT id FROM Usres WHERE email = ' + email);
+      if (resultSet.isNotEmpty) {
         return Response(HttpStatus.badRequest, body: 'User already exists');
+
       }
 
       // Create user
       final salt = generateSalt();
       final hashedPassword = hashPassword(password, salt);
-      await store.save({
+      try {
+      var stmt = db.prepare('INSERT INTO Users (email, password,salt) VALUES (?,?,?)');
+      json
+          .decode(File('films.json').readAsStringSync())
+          .forEach((film) => stmt.execute([email, hashedPassword, salt]));
+
+      stmt.dispose();
+    } catch (error) {
+      print(' error while adding user  ' + error.toString());
+      return Response(HttpStatus.badRequest, body: 'error while adding user');
+    }
+   /*   await store.save({
         'email': email,
         'password': hashedPassword,
         'salt': salt,
-      });
+      }
+      );*/
 
       return Response.ok('Successfully registered user');
     });
@@ -67,18 +84,24 @@ class AuthApi {
             body: 'Please provide your email and password');
       }
 
-      final user = await store.findOne(where.eq('email', email));
-      if (user == null) {
+      //final user = await store.findOne(where.eq('email', email));
+      final ResultSet resultSet =
+      db.select('SELECT id FROM Usres WHERE email = ' + email);
+      if (resultSet.isEmpty) {
         return Response.forbidden('Incorrect user and/or password');
+
       }
 
+      final user = ({'id': resultSet.first['id'] , 'email': resultSet.first['email'] ,'salt': resultSet.first['salt'] } );
+     // final user = resultSet.toList ();
       final hashedPassword = hashPassword(password, user['salt']);
       if (hashedPassword != user['password']) {
         return Response.forbidden('Incorrect user and/or password');
       }
 
       // Generate JWT and send with response
-      final userId = (user['_id'] as ObjectId).toHexString();
+      final userId = (user['_id'] as ObjectId).toString();
+      print('User ID:' + userId);
       try {
         final tokenPair = await tokenService.createTokenPair(userId);
         return Response.ok(json.encode(tokenPair.toJson()), headers: {
