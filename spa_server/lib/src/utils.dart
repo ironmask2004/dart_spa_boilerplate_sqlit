@@ -76,7 +76,7 @@ Middleware handleAuth(String secret) {
       final authHeader = request.headers['authorization'];
       var token, jwt;
 
-      if (authHeader != null && authHeader.startsWith('Bearer ')) {
+      if (authHeader != null && authHeader.startsWith('Bearer')) {
         token = authHeader.substring(7);
         jwt = verifyJwt(token, secret);
       }

@@ -31,19 +31,18 @@ class dbSqlite_api {
 
     try {
          stmt = MyDatabase.prepare(
-          'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
+          'CREATE TABLE Users (id INTEGER PRIMARY KEY, email  TEXT, password TEXT, _id TEXT , salt TEXT)');
 
       stmt.execute();
-      print('created table Test');
+      print('created table USers');
       stmt.dispose();
    } catch (error) {
-     print(' Table Test  Already exist ' + error.toString());
+     print(' Table Users  Already exist ' + error.toString());
     }
 
     try {
-    stmt = MyDatabase.prepare('INSERT INTO Test (id  , name  , value  , num  ) VALUES (?,?,?)');
-
-    stmt.execute([1, 'title', 999, 888]);
+    stmt = MyDatabase.prepare('INSERT INTO Users (id  , email  , password  , _id , salt  ) VALUES (?,?,?)');
+    stmt.execute([1, 'mm.local.com', "123456", "123456789","etertert"]);
     stmt.dispose();
     } catch (error) {
       print(' recored already inserted  ' + error.toString());
@@ -51,7 +50,7 @@ class dbSqlite_api {
 
 
 
-    final ResultSet resultSet = MyDatabase.select('SELECT * FROM Test ');
+    final ResultSet resultSet = MyDatabase.select('SELECT * FROM users ');
     resultSet.forEach((element) {
       print(element);
     });

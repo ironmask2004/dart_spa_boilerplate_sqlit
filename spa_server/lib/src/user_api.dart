@@ -17,8 +17,10 @@ class UserApi {
     router.get('/', (Request req) async {
       final authDetails = req.context['authDetails'] as JWT;
 
+      print('authDetails.subject.toString ' + authDetails.subject.toString());
+
       final ResultSet resultSet =
-      db.select('SELECT id FROM Usres WHERE _id = ' + authDetails.subject.toString());
+      db.select('SELECT id FROM Users WHERE _id = ' + authDetails.subject.toString());
       if (resultSet.isEmpty) {
         return Response.forbidden('Incorrect user and/or password');
 
