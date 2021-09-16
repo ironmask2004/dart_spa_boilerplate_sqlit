@@ -16,31 +16,41 @@ class dbSqlite_api {
 
     dbSqlite_api(DatabaseName) {
     this.DatabaseName = DatabaseName;
-    MyDatabase = openDB() as Database;
+   openDB() ;
+
   }
 
   Future<Database> openDB() async {
     //  DatabasesPath = await getDatabasesPath();
     //   String path = join(DatabasesPath, DatabaseName);
-
-    print(' Open Data BAse :Spa_datBase');
-
+    print(' Open Data BAse : ' + DatabaseName);
     open.overrideFor(OperatingSystem.linux, _openSqlit3OnLinux);
     //database = sqlite3.openInMemory();
-    Database  MyDatabase  = sqlite3.open(DatabaseName);
+    MyDatabase  = sqlite3.open(DatabaseName);
+    var  stmt;
+
     try {
-      var stmt = MyDatabase.prepare(
+         stmt = MyDatabase.prepare(
           'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
+
       stmt.execute();
       print('created table Test');
-
       stmt.dispose();
-      stmt = MyDatabase.prepare('INSERT INTO Test (id, title) VALUES (?,?)');
-      stmt.execute([1, 'title', 999]);
-      stmt.dispose();
-    } catch (error) {
-      print(' Table Film Already exist ' + error.toString());
+   } catch (error) {
+     print(' Table Test  Already exist ' + error.toString());
     }
+
+    try {
+    stmt = MyDatabase.prepare('INSERT INTO Test (id  , name  , value  , num  ) VALUES (?,?,?)');
+
+    stmt.execute([1, 'title', 999, 888]);
+    stmt.dispose();
+    } catch (error) {
+      print(' recored already inserted  ' + error.toString());
+    }
+
+
+
     final ResultSet resultSet = MyDatabase.select('SELECT * FROM Test ');
     resultSet.forEach((element) {
       print(element);

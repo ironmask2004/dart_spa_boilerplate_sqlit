@@ -13,6 +13,7 @@ class AuthApi {
   String secret;
   TokenService tokenService;
   Database db;
+ // String  dbname;
 
 
   AuthApi(this.db, this.store, this.secret, this.tokenService);
