@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert';
+import 'package:objectid/objectid.dart';
 import 'package:path/path.dart';
 import 'dart:async';
 import 'package:path/path.dart';
@@ -31,27 +32,24 @@ class dbSqlite_api {
 
     try {
          stmt = MyDatabase.prepare(
-          'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
+          'CREATE TABLE Users (id INTEGER PRIMARY KEY, email  TEXT, password TEXT, _id TEXT , salt TEXT)');
 
       stmt.execute();
-      print('created table Test');
+      print('created table USers');
       stmt.dispose();
    } catch (error) {
-     print(' Table Test  Already exist ' + error.toString());
+     print(' Table Users  Already exist ' + error.toString());
     }
 
     try {
-    stmt = MyDatabase.prepare('INSERT INTO Test (id  , name  , value  , num  ) VALUES (?,?,?)');
-
-    stmt.execute([1, 'title', 999, 888]);
+    stmt = MyDatabase.prepare('INSERT INTO Users (  _id , id  , email  , password  , salt  ) VALUES (?,?,?,?,?)');
+    stmt.execute([ObjectId().toString(), 1, 'kflihan@kflihan.com', "123456",  "etertert"]);
     stmt.dispose();
     } catch (error) {
       print(' recored already inserted  ' + error.toString());
     }
 
-
-
-    final ResultSet resultSet = MyDatabase.select('SELECT * FROM Test ');
+    final ResultSet resultSet = MyDatabase.select('SELECT * FROM users ');
     resultSet.forEach((element) {
       print(element);
     });

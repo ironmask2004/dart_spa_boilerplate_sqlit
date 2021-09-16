@@ -13,9 +13,6 @@ class AuthApi {
   String secret;
   TokenService tokenService;
   Database db;
- // String  dbname;
-
-
   AuthApi(this.db, this.store, this.secret, this.tokenService);
 
   Router get router {
@@ -38,38 +35,34 @@ class AuthApi {
 
       // Ensure user is unique
       //final user = await store_findOne(where.eq('email', email));
-
+      print(db.toString());
       final ResultSet resultSet =
-      db.select('SELECT id FROM Usres WHERE email = ' + email);
+          db.select('SELECT id FROM Users WHERE email = \"' + email + '\"');
       if (resultSet.isNotEmpty) {
         return Response(HttpStatus.badRequest, body: 'User already exists');
-
       }
 
       // Create user
+      //final authDetails = req.context['authDetails'] as JWT;
+      //print (authDetails.subject.toString());
+      final _id = ObjectId().toString();
       final salt = generateSalt();
       final hashedPassword = hashPassword(password, salt);
       try {
-      var stmt = db.prepare('INSERT INTO Users (email, password,salt) VALUES (?,?,?)');
-      json
-          .decode(File('films.json').readAsStringSync())
-          .forEach((film) => stmt.execute([email, hashedPassword, salt]));
+        var stmt = db.prepare(
+            'INSERT INTO Users (email, password,salt,_id ) VALUES (?,?,?, ?)');
 
-      stmt.dispose();
-    } catch (error) {
-      print(' error while adding user  ' + error.toString());
-      return Response(HttpStatus.badRequest, body: 'error while adding user');
-    }
-   /*   await store.save({
-        'email': email,
-        'password': hashedPassword,
-        'salt': salt,
+        stmt.execute([email, hashedPassword, salt, _id]);
+
+        stmt.dispose();
+      } catch (error) {
+        print(' error while adding user  ' + error.toString());
+        return Response(HttpStatus.badRequest, body: 'error while adding user');
       }
-      );*/
-
       return Response.ok('Successfully registered user');
     });
 
+    ///------ LOGiN
     router.post('/login', (Request req) async {
       final payload = await req.readAsString();
       final userInfo = json.decode(payload);
@@ -87,21 +80,29 @@ class AuthApi {
 
       //final user = await store.findOne(where.eq('email', email));
       final ResultSet resultSet =
-      db.select('SELECT id FROM Usres WHERE email = ' + email);
+          db.select('SELECT *  FROM Users WHERE email = \"' + email + "\"");
       if (resultSet.isEmpty) {
         return Response.forbidden('Incorrect user and/or password');
-
       }
-
-      final user = ({'id': resultSet.first['id'] , 'email': resultSet.first['email'] ,'salt': resultSet.first['salt'] } );
-     // final user = resultSet.toList ();
+      print(resultSet.first.toString());
+      final user = ({
+        'id': resultSet.first['id'],
+        '_id': resultSet.first['_id'],
+        'email': resultSet.first['email'],
+        'password': resultSet.first['password'],
+        'salt': resultSet.first['salt']
+      });
+      // final user = resultSet.toList ();
+      print(user.toString());
       final hashedPassword = hashPassword(password, user['salt']);
       if (hashedPassword != user['password']) {
         return Response.forbidden('Incorrect user and/or password');
       }
 
       // Generate JWT and send with response
-      final userId = (user['_id'] as ObjectId).toString();
+      print('User ID:' + user['_id']);
+      // final userId = (user['_id'] as ObjectId).toHexString();
+      final userId = ObjectId.fromHexString(user['_id']).toString();
       print('User ID:' + userId);
       try {
         final tokenPair = await tokenService.createTokenPair(userId);
@@ -110,7 +111,8 @@ class AuthApi {
         });
       } catch (e) {
         return Response.internalServerError(
-            body: 'There was a problem logging you in. Please try again.');
+            body: 'There was a problem logging you in. Please try again.' +
+                e.toString());
       }
     });
 
@@ -121,7 +123,7 @@ class AuthApi {
       }
 
       try {
-        await tokenService.removeRefreshToken( ((auth as JWT)).jwtId.toString());
+        await tokenService.removeRefreshToken(((auth as JWT)).jwtId.toString());
       } catch (e) {
         return Response.internalServerError(
             body:
@@ -135,12 +137,15 @@ class AuthApi {
       final payload = await req.readAsString();
       final payloadMap = json.decode(payload);
 
+      print(payloadMap['refreshToken'].toString());
+
       final token = verifyJwt(payloadMap['refreshToken'], secret);
       if (token == null) {
         return Response(400, body: 'Refresh token is not valid.');
       }
 
-      final dbToken = await tokenService.getRefreshToken((token as JWT).jwtId.toString());
+      final dbToken =
+          await tokenService.getRefreshToken((token as JWT).jwtId.toString());
       if (dbToken == null) {
         return Response(400, body: 'Refresh token is not recognised.');
       }
@@ -150,7 +155,8 @@ class AuthApi {
       try {
         await tokenService.removeRefreshToken((token as JWT).jwtId.toString());
 
-        final tokenPair = await tokenService.createTokenPair(oldJwt.subject.toString());
+        final tokenPair =
+            await tokenService.createTokenPair(oldJwt.subject.toString());
         return Response.ok(
           json.encode(tokenPair.toJson()),
           headers: {
@@ -160,7 +166,7 @@ class AuthApi {
       } catch (e) {
         return Response.internalServerError(
             body:
-                'There was a problem creating a new token. Please try again.');
+                'There was a problem creating a new token. Please try again.' + e.toString());
       }
     });
 

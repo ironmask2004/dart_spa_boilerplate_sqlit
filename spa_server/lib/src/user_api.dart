@@ -17,12 +17,15 @@ class UserApi {
     router.get('/', (Request req) async {
       final authDetails = req.context['authDetails'] as JWT;
 
+      print('authDetails.subject.toString ' + authDetails.subject.toString());
+
       final ResultSet resultSet =
-      db.select('SELECT id FROM Usres WHERE _id = ' + authDetails.subject.toString());
+      db.select('SELECT * FROM Users WHERE _id = \"' + authDetails.subject.toString() + "\"");
       if (resultSet.isEmpty) {
         return Response.forbidden('Incorrect user and/or password');
 
       }
+      print(resultSet.toString());
 
       final   user = await ({'id': resultSet.first['id'] , 'email': resultSet.first['email'] ,'salt': resultSet.first['salt'] } );
      // final user = resultSet.toList ();
