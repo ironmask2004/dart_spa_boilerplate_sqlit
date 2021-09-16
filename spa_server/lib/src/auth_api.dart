@@ -1,4 +1,4 @@
-import 'dart:convert';
+/*import 'dart:convert';
 import 'dart:io';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:objectid/objectid.dart';
@@ -6,7 +6,9 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'token_service.dart';
-import 'utils.dart';
+import 'utils.dart';*/
+
+import 'package:spa_server/spa_server.dart';
 
 class AuthApi {
   String store;

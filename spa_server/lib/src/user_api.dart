@@ -1,9 +1,5 @@
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf_router/shelf_router.dart';
-import 'package:sqlite3/sqlite3.dart';
+import 'package:spa_server/spa_server.dart';
 
-import './utils.dart';
 
 class UserApi {
   String store;

@@ -1,8 +1,6 @@
-import 'package:redis/redis.dart';
-import 'package:uuid/uuid.dart';
 
-import 'token_pair.dart';
-import 'utils.dart';
+
+import 'package:spa_server/spa_server.dart';
 
 class TokenService {
   TokenService(this.db, this.secret);
