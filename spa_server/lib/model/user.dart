@@ -5,7 +5,7 @@
 import 'package:spa_server/spa_server.dart';
 
 class User {
-  User({
+  User._User({
     String? id,
     String? email,
     String? password,
@@ -42,21 +42,29 @@ class User {
     return map;
   }
 
-  Future<String> findOneByID(String id, Database db) async {
-    final ResultSet resultSet =
-        db.select('SELECT * FROM Users WHERE id = \"' + id + "\"");
-    if (resultSet.isEmpty) {
-      return ("NULL");
+  User(String id, Database db)   {
+    try   {
+       var foundUser =   findUserByID(id, db).then ( (value) {
+
+       return(  ("'id' : 'ddddddddd' "));
+
+       });
+
+       print("00000000000000000000" + foundUser['id']);
+      //  print( "---------------user returen by founduserby id :" + foundUser['id']);
+      // var usdKey = foundUser.keys.firstWhere(
+        //       (key) => foundUser[key] == 'id', orElse: () => null);
+       // print("value:ID:" + foundUser['id'].toString());
+        /* this._id = foundUser['id'];
+        this._email = foundUser['email'];
+        this._password = foundUser['password'];
+        this._salt = foundUser['salt'];
+*/
+
+      print('founded Email:' + this._email! );
+      print('founded userid:' + this._id! );
+    } catch (e) {
+      print('creat user from database eroor ' + e.toString());
     }
-    print(resultSet.toString());
-    return (   await ({
-      'id': resultSet.first['id'],
-      'email': resultSet.first['email'],
-      'salt': resultSet.first['salt'],
-      'password': resultSet.first['password'],
-    }).toString()
-
-    ) ;
-
   }
 }

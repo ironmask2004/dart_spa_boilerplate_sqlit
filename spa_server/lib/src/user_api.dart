@@ -9,27 +9,9 @@ class UserApi {
     router.get('/', (Request req) async {
       final authDetails = req.context['authDetails'] as JWT;
       print('authDetails.subject.toString ' + authDetails.subject.toString());
-      User Curr_user = User();
-      final user = Curr_user.findOneByID( authDetails.subject.toString()  ,   db);
-
-      /* final ResultSet resultSet = db.select(
-          'SELECT * FROM Users WHERE id = \"' +
-              authDetails.subject.toString() +
-              "\"");
-      if (resultSet.isEmpty) {
-        return Response.forbidden('Incorrect user and/or password');
-      }
-      print(resultSet.toString());
-      final user = await ({
-        'id': resultSet.first['id'],
-        'email': resultSet.first['email'],
-        'salt': resultSet.first['salt']
-      }); */
-
-      // final user = resultSet.toList ();
-      // final user = await store.findOne(
-      //    where.eq('id', ObjectId.fromHexString(authDetails.subject.toString())) )
-      return Response.ok('{ "email": "${user['email']}" }', headers: {
+      User Curr_user = User( authDetails.subject.toString(), db);
+       print ("founded_user------:" + Curr_user.email!);
+          return Response.ok('{ "email": "${Curr_user.email}" }', headers: {
         'content-type': 'application/json',
       });
     });

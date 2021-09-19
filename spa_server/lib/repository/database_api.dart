@@ -34,7 +34,7 @@ class dbSqlite_api {
 
     try {
          stmt = MyDatabase.prepare(
-          'CREATE TABLE Users (  id TEXT ,  email  TEXT, password TEXT, salt TEXT)');
+          'CREATE TABLE Users (  id TEXT UNIQUE ,  email  TEXT NOT NULL PRIMARY KEY UNIQUE  , password TEXT, salt TEXT)');
 
       stmt.execute();
       print('created table USers');
@@ -45,17 +45,23 @@ class dbSqlite_api {
 
     try {
     stmt = MyDatabase.prepare('INSERT INTO Users (  id ,   email  , password  , salt  ) VALUES (?,?,?,?)');
-    stmt.execute([ObjectId().toString(),  'kflihan@kflihan.com', "123456",  "etertert"]);
+
+    stmt.execute([ ObjectId().toString() ,  'kflihan@kflihan.com', "123456",  "etertert"]);
     stmt.dispose();
     } catch (error) {
       print(' recored already inserted  ' + error.toString());
     }
+
 
     final ResultSet resultSet = MyDatabase.select('SELECT * FROM users ');
     resultSet.forEach((element) {
       print(element);
     });
 
+    User Curr_user = User( '61479e65d8c827be1c09138c', MyDatabase);
+    //print ("founded_user------:" + Curr_user.email!);
+  //  print("email:"  + Curr_user.email! );
+    print("test find user by id :Curr_user" + Curr_user.toJson().toString());
     return (MyDatabase);
   }
 }
