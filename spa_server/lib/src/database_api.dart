@@ -34,7 +34,7 @@ class dbSqlite_api {
 
     try {
          stmt = MyDatabase.prepare(
-          'CREATE TABLE Users (id INTEGER PRIMARY KEY, email  TEXT, password TEXT, _id TEXT , salt TEXT)');
+          'CREATE TABLE Users (  id TEXT ,  email  TEXT, password TEXT, salt TEXT)');
 
       stmt.execute();
       print('created table USers');
@@ -44,8 +44,8 @@ class dbSqlite_api {
     }
 
     try {
-    stmt = MyDatabase.prepare('INSERT INTO Users (  _id , id  , email  , password  , salt  ) VALUES (?,?,?,?,?)');
-    stmt.execute([ObjectId().toString(), 1, 'kflihan@kflihan.com', "123456",  "etertert"]);
+    stmt = MyDatabase.prepare('INSERT INTO Users (  id ,   email  , password  , salt  ) VALUES (?,?,?,?)');
+    stmt.execute([ObjectId().toString(),  'kflihan@kflihan.com', "123456",  "etertert"]);
     stmt.dispose();
     } catch (error) {
       print(' recored already inserted  ' + error.toString());

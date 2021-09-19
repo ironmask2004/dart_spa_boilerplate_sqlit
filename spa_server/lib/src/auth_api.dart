@@ -1,12 +1,3 @@
-/*import 'dart:convert';
-import 'dart:io';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:objectid/objectid.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf_router/shelf_router.dart';
-import 'package:sqlite3/sqlite3.dart';
-import 'token_service.dart';
-import 'utils.dart';*/
 
 import 'package:spa_server/spa_server.dart';
 
@@ -47,14 +38,14 @@ class AuthApi {
       // Create user
       //final authDetails = req.context['authDetails'] as JWT;
       //print (authDetails.subject.toString());
-      final _id = ObjectId().toString();
+      final id = ObjectId().toString();
       final salt = generateSalt();
       final hashedPassword = hashPassword(password, salt);
       try {
         var stmt = db.prepare(
-            'INSERT INTO Users (email, password,salt,_id ) VALUES (?,?,?, ?)');
+            'INSERT INTO Users (email, password,salt,id ) VALUES (?,?,?, ?)');
 
-        stmt.execute([email, hashedPassword, salt, _id]);
+        stmt.execute([email, hashedPassword, salt, id]);
 
         stmt.dispose();
       } catch (error) {
@@ -89,7 +80,7 @@ class AuthApi {
       print(resultSet.first.toString());
       final user = ({
         'id': resultSet.first['id'],
-        '_id': resultSet.first['_id'],
+        'id': resultSet.first['id'],
         'email': resultSet.first['email'],
         'password': resultSet.first['password'],
         'salt': resultSet.first['salt']
@@ -102,9 +93,9 @@ class AuthApi {
       }
 
       // Generate JWT and send with response
-      print('User ID:' + user['_id']);
-      // final userId = (user['_id'] as ObjectId).toHexString();
-      final userId = ObjectId.fromHexString(user['_id']).toString();
+      print('User ID:' + user['id']);
+      // final userId = (user['id'] as ObjectId).toHexString();
+      final userId = ObjectId.fromHexString(user['id']).toString();
       print('User ID:' + userId);
       try {
         final tokenPair = await tokenService.createTokenPair(userId);

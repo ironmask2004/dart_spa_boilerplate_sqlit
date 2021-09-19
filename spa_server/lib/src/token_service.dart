@@ -20,7 +20,7 @@ class TokenService {
     final token =
         generateJwt(userId, 'http://localhost', secret, jwtId: tokenId);
 
-    final refreshTokenExpiry = Duration(seconds: 60);
+    final refreshTokenExpiry = Duration(seconds: 160);
     final refreshToken = generateJwt(
       userId,
       'http://localhost',
