@@ -66,7 +66,7 @@ class dbSqlite_api {
       print('test find user by id ' + Curr_user.id.toString()  + Curr_user.toJson().toString());
 
 
-      Curr_user = await User.findById('61479e9230c0367b5195d8d4', MyDatabase);
+      Curr_user = await User.findById('5454545464', MyDatabase);
       print('test find user by id ' + Curr_user.id.toString()  + Curr_user.toJson().toString());
     } catch (err)
     {

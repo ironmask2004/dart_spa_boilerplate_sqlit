@@ -17,10 +17,9 @@ void main() async {
  */
 
 Future<User> findUserByID(String id, Database db) async {
-  final ResultSet resultSet =
-      db.select('SELECT * FROM Users WHERE id = \"' + id + "\"");
+  final resultSet =
+      db.select('SELECT * FROM Users WHERE id = \"' + id + '\"');
   if (resultSet.isNotEmpty) {
-    print('++++++++:' + resultSet.toString());
     return User.fromJson(resultSet.first);
   } else {
     print(' User ID($id) Not Found ');
