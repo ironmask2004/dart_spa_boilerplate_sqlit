@@ -23,6 +23,14 @@ class User {
     _password = json['password'];
     _salt = json['salt'];
   }
+
+  User._fromJson(dynamic json) {
+    _id = json['id'];
+    _email = json['email'];
+    _password = json['password'];
+    _salt = json['salt'];
+  }
+
   String? _id;
   String? _email;
   String? _password;
@@ -42,29 +50,7 @@ class User {
     return map;
   }
 
-  User(String id, Database db)   {
-    try   {
-       var foundUser =   findUserByID(id, db).then ( (value) {
-
-       return(  ("'id' : 'ddddddddd' "));
-
-       });
-
-       print("00000000000000000000" + foundUser['id']);
-      //  print( "---------------user returen by founduserby id :" + foundUser['id']);
-      // var usdKey = foundUser.keys.firstWhere(
-        //       (key) => foundUser[key] == 'id', orElse: () => null);
-       // print("value:ID:" + foundUser['id'].toString());
-        /* this._id = foundUser['id'];
-        this._email = foundUser['email'];
-        this._password = foundUser['password'];
-        this._salt = foundUser['salt'];
-*/
-
-      print('founded Email:' + this._email! );
-      print('founded userid:' + this._id! );
-    } catch (e) {
-      print('creat user from database eroor ' + e.toString());
-    }
+ static  Future<User> findById(String id, Database db)  async  {
+   return (await findUserByID(id, db));
   }
 }

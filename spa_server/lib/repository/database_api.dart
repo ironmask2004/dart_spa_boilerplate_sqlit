@@ -58,10 +58,20 @@ class dbSqlite_api {
       print(element);
     });
 
-    User Curr_user = User( '61479e65d8c827be1c09138c', MyDatabase);
-    //print ("founded_user------:" + Curr_user.email!);
-  //  print("email:"  + Curr_user.email! );
-    print("test find user by id :Curr_user" + Curr_user.toJson().toString());
+    try {
+      User Curr_user = await User.findById(
+          '61479e65d8c827be1c09138c', MyDatabase);
+      //print ("founded_user------:" + Curr_user.email!);
+      //  print("email:"  + Curr_user.email! );
+      print("test find user by id :Curr_user" + Curr_user.toJson().toString());
+
+
+      Curr_user = await User.findById('11111111', MyDatabase);
+      print("test find user by id :Curr_user" + Curr_user.toJson().toString());
+    } catch (err)
+    {
+      print('find users' + err.toString());
+    }
     return (MyDatabase);
   }
 }

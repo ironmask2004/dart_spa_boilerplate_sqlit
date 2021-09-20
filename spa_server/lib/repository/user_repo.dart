@@ -16,19 +16,12 @@ void main() async {
 }
  */
 
-Future<String> findUserByID(String id, Database db) async {
+Future<User> findUserByID(String id, Database db) async {
   final ResultSet resultSet =
   db.select('SELECT * FROM Users WHERE id = \"' + id + "\"");
   if (resultSet.isNotEmpty) {
     print("++++++++:" + resultSet.toString());
-  /* return (await ({
-      'id': resultSet.first['id'],
-      'email': resultSet.first['email'],
-      'salt': resultSet.first['salt'],
-      'password': resultSet.first['password'],
-    }).toString());*/
-
-    return    ( await resultSet.toString());
+    return   User.fromJson ( await resultSet.first);
   } else
     print( ' User ID($id) Not Found ');
     throw ' User ID($id) Not Found ';
