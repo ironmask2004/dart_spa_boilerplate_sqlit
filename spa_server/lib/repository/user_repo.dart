@@ -1,28 +1,27 @@
 import 'package:spa_server/spa_server.dart';
-/*
-Future<String> fetchData() async {
-  final response = await http.get('http://webcode.me');
-
-  if (response.statusCode == 200) {
-    return response.body;
-  } else {
-    throw Exception('Failed to fetch data');
-  }
-}
-
-void main() async {
-  var data = await fetchData();
-  print(data);
-}
- */
 
 Future<User> findUserByID(String id, Database db) async {
-  final resultSet =
-      db.select('SELECT * FROM Users WHERE id = \"' + id + '\"');
+  final resultSet = db.select('SELECT * FROM Users WHERE id = \"' + id + '\"');
   if (resultSet.isNotEmpty) {
     return User.fromJson(resultSet.first);
   } else {
     print(' User ID($id) Not Found ');
     throw ' User ID($id) Not Found ';
+  }
+}
+
+Future<List<User>> findUserAll(Database db) async {
+  List<User> resultUsers = <User>[];
+  final resultSet = db.select('SELECT * FROM Users ');
+  if (resultSet.isNotEmpty) {
+    resultSet.forEach((element) {
+      // print(element);
+      resultUsers.add(User.fromJson(element));
+    });
+
+    return (resultUsers);
+  } else {
+    print(' Users is Empty ');
+    throw ' Users is Empty ';
   }
 }

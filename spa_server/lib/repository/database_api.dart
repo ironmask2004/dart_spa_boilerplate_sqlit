@@ -17,10 +17,9 @@ class dbSqlite_api {
 
   late final Database MyDatabase;
 
-    dbSqlite_api(DatabaseName) {
+  dbSqlite_api(DatabaseName) {
     this.DatabaseName = DatabaseName;
-   openDB() ;
-
+    openDB();
   }
 
   Future<Database> openDB() async {
@@ -29,47 +28,52 @@ class dbSqlite_api {
     print(' Open Data BAse : ' + DatabaseName);
     open.overrideFor(OperatingSystem.linux, _openSqlit3OnLinux);
     //database = sqlite3.openInMemory();
-    MyDatabase  = sqlite3.open(DatabaseName);
-    var  stmt;
+    MyDatabase = sqlite3.open(DatabaseName);
+    var stmt;
 
     try {
-         stmt = MyDatabase.prepare(
+      stmt = MyDatabase.prepare(
           'CREATE TABLE Users (  id TEXT UNIQUE ,  email  TEXT NOT NULL PRIMARY KEY UNIQUE  , password TEXT, salt TEXT)');
 
       stmt.execute();
       print('created table USers');
       stmt.dispose();
-   } catch (error) {
-     print(' Table Users  Already exist ' + error.toString());
+    } catch (error) {
+      print(' Table Users  Already exist ' + error.toString());
     }
 
     try {
-    stmt = MyDatabase.prepare('INSERT INTO Users (  id ,   email  , password  , salt  ) VALUES (?,?,?,?)');
+      stmt = MyDatabase.prepare(
+          'INSERT INTO Users (  id ,   email  , password  , salt  ) VALUES (?,?,?,?)');
 
-    stmt.execute([ ObjectId().toString() ,  'kflihan@kflihan.com', "123456",  "etertert"]);
-    stmt.dispose();
+      stmt.execute(
+          [ObjectId().toString(), 'kflihan@kflihan.com', "123456", "etertert"]);
+      stmt.dispose();
     } catch (error) {
       print(' recored already inserted  ' + error.toString());
     }
 
-
-    final ResultSet resultSet = MyDatabase.select('SELECT * FROM users ');
-    resultSet.forEach((element) {
-      print(element);
+    print('------ Start  list all Users -----');
+    final List<User> UserAll = await findUserAll(MyDatabase);
+    UserAll.forEach((element) {
+      print(element.toJson().toString());
     });
+    print('------ End  list all Users -----');
 
     try {
-      User Curr_user = await User.findById(
-          '61479e65d8c827be1c09138c', MyDatabase);
+      User Curr_user =
+          await User.findById('61479e65d8c827be1c09138c', MyDatabase);
       //print ("founded_user------:" + Curr_user.email!);
       //  print("email:"  + Curr_user.email! );
-      print('test find user by id ' + Curr_user.id.toString()  + Curr_user.toJson().toString());
-
+      print('test find user by id ' +
+          Curr_user.id.toString() +
+          Curr_user.toJson().toString());
 
       Curr_user = await User.findById('5454545464', MyDatabase);
-      print('test find user by id ' + Curr_user.id.toString()  + Curr_user.toJson().toString());
-    } catch (err)
-    {
+      print('test find user by id ' +
+          Curr_user.id.toString() +
+          Curr_user.toJson().toString());
+    } catch (err) {
       print('find users' + err.toString());
     }
     return (MyDatabase);
