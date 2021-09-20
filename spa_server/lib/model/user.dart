@@ -50,9 +50,7 @@ class User {
     return map;
   }
 
-  static  Future<User> findById(String id, Database db)  async  {
-   return (await findUserByID(id, db));
+ static Future<User> findById(String id, Database db) async {
+    return (await findUserByID(id, db));
   }
-
-
 }
