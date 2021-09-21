@@ -4,7 +4,8 @@ import 'package:spa_server/spa_server.dart';
 void main(List<String> arguments) async {
   const secret = Env.secretKey;
   const port = Env.serverPort;
-  final dbname = 'Spa_database.db';
+  const dbname = Env.sqliteName;
+  const serverHost = Env.serverHost;
 
   final tokenService = TokenService(RedisConnection(), secret);
 
@@ -32,7 +33,7 @@ void main(List<String> arguments) async {
       .addHandler(app);
 
   print('HTTP Service running on port $port');
-      await serve(handler, 'localhost', int.parse(Env.serverPort));
+      await serve(handler, serverHost , int.parse(Env.serverPort));
 
 
   //await serve(app, 'localhost', int.parse(Env.serverPort));

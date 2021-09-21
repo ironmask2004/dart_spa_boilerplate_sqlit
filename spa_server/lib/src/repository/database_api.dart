@@ -57,6 +57,7 @@ class dbSqlite_api {
     final List<User> UserAll = await findUserAll(MyDatabase);
     UserAll.forEach((element) {
       print(element.toJson().toString());
+      print(element.email);
     });
     print('------ End  list all Users -----');
 
@@ -69,10 +70,10 @@ class dbSqlite_api {
           Curr_user.id.toString() +
           Curr_user.toJson().toString());
 
-      Curr_user = await User.findById('5454545464', MyDatabase);
+      final NotFounduser = await User.findById('5454545464', MyDatabase);
       print('test find user by id ' +
-          Curr_user.id.toString() +
-          Curr_user.toJson().toString());
+          NotFounduser.id.toString() +
+          NotFounduser.toJson().toString());
     } catch (err) {
       print('find users' + err.toString());
     }

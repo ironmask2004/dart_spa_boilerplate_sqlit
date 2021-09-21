@@ -128,6 +128,7 @@ class AuthApi {
 
     router.post('/refreshToken', (Request req) async {
       final payload = await req.readAsString();
+      print(payload);
       final payloadMap = json.decode(payload);
 
       print(payloadMap['refreshToken'].toString());
