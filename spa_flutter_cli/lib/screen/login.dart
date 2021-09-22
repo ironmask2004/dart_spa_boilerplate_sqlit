@@ -4,9 +4,12 @@ class Login extends StatelessWidget {
   // const Login({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
+  String _email = "";
+  String _password = "";
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         key: _scaffoldkey,
         appBar: AppBar(
@@ -28,15 +31,15 @@ class Login extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         TextFormField(
-                          key: Key("_username"),
-                          decoration: InputDecoration(labelText: "Username"),
+                          key: Key("_email"),
+                          decoration: const InputDecoration(labelText: "email"),
                           keyboardType: TextInputType.text,
-                       //   onSaved: (String value) {
-                      //      _username = value;
-                       //   },
+                          onSaved: (value) {
+                            _email = value!;
+                          },
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Username is required';
+                              return 'email is required';
                             }
                             return null;
                           },
@@ -44,9 +47,10 @@ class Login extends StatelessWidget {
                         TextFormField(
                           decoration: InputDecoration(labelText: "Password"),
                           obscureText: true,
-                 //         onSaved: (String value) {
-                 //           _password = value;
-                //          },
+                          onSaved: (value) {
+                            _password = value!;
+                            print('saved password:' +_password  );
+                          },
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Password is required';
@@ -57,8 +61,11 @@ class Login extends StatelessWidget {
                         const SizedBox(height: 10.0),
                         ButtonBar(
                           children: <Widget>[
-                            RaisedButton.icon(
-                                onPressed: _handleSubmitted,
+                            ElevatedButton.icon(
+                                onPressed: () {
+                                  print("email + password was :" + _email + _password);
+                                   _handleSubmitted(context );
+                                },
                                 icon: Icon(Icons.arrow_forward),
                                 label: Text('Sign in')),
                           ],
@@ -70,21 +77,36 @@ class Login extends StatelessWidget {
           ),
         ));
   }
-  void _handleSubmitted() async {
+
+  void _handleSubmitted(BuildContext context) async {
     final FormState? form = _formKey.currentState;
-    /* if (!form.validate()) {
-      showInSnackBar('Please fix the errors in red before submitting.');
+    if (!form!.validate()) {
+      showInSnackBar(
+          context, 'Please fix the errors in red before submitting.');
     } else {
       form.save();
-      _apiResponse = await authenticateUser(_username, _password);
+      print(" callinf fun email + password was :" + _email + _password);
+      var _apiResponse = await authenticateUser(_email, _password);
       if ((_apiResponse.ApiError as ApiError) == null) {
-        _saveAndRedirectToHome();
+        _saveAndRedirectToHome(context, _apiResponse);
       } else {
-        showInSnackBar((_apiResponse.ApiError as ApiError).error);
+        showInSnackBar(context, (_apiResponse.ApiError as ApiError).error);
       }
     }
-    */
   }
 
+  void _saveAndRedirectToHome(
+      BuildContext context, ApiResponse _apiResponse) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? _userId = (_apiResponse.Data as User).id;
+    await prefs.setString("userId", _userId!);
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/home', ModalRoute.withName('/home'),
+        arguments: (_apiResponse.Data as User));
+  }
 
+  void showInSnackBar(BuildContext context, String error) {
+    final snackBar = SnackBar(content: Text(error));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }

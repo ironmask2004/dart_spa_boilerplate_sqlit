@@ -1,6 +1,8 @@
 import 'package:spa_flutter_cli/exp_library.dart';
 
 class Landing extends StatefulWidget {
+  const Landing({Key? key}) : super(key: key);
+
   @override
   _LandingState createState() => _LandingState();
 }

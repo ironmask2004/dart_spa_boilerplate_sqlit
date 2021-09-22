@@ -11,6 +11,7 @@ class ApiError {
   set error(String error) => _error = error;
 
   ApiError.fromJson(Map<String, dynamic> json) {
+   // print(json.toString());
     _error = json['error'];
   }
 

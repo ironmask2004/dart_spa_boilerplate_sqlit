@@ -68,14 +68,14 @@ class AuthApi {
           password == null ||
           password.isEmpty) {
         return Response(HttpStatus.badRequest,
-            body: 'Please provide your email and password');
+            body: '"{ \"error\" : \"Please provide your email and password\" }"');
       }
 
       //final user = await store.findOne(where.eq('email', email));
       final ResultSet resultSet =
           db.select('SELECT *  FROM Users WHERE email = \"' + email + "\"");
       if (resultSet.isEmpty) {
-        return Response.forbidden('Incorrect user and/or password');
+        return Response.forbidden("{ \"error\" : \"Incorrect user and/or password\" }");
       }
       print(resultSet.first.toString());
       final user = ({
@@ -89,8 +89,8 @@ class AuthApi {
       print(user.toString());
       final hashedPassword = hashPassword(password, user['salt']);
       if (hashedPassword != user['password']) {
-        return Response.forbidden('Incorrect user and/or password');
-      }
+        return Response.forbidden("{ \"error\" : \"Incorrect user and/or password\" }" );
+      };
 
       // Generate JWT and send with response
       print('User ID:' + user['id']);
@@ -104,8 +104,8 @@ class AuthApi {
         });
       } catch (e) {
         return Response.internalServerError(
-            body: 'There was a problem logging you in. Please try again.' +
-                e.toString());
+            body:   "{ \"error\" : \"" +  'There was a problem logging you in. Please try again.' +
+                e.toString() +"\" }" );
       }
     });
 
@@ -161,7 +161,8 @@ class AuthApi {
       } catch (e) {
         return Response.internalServerError(
             body:
-                'There was a problem creating a new token. Please try again.' + e.toString());
+                'There was a problem creating a new token. Please try again.' + e.toString())
+        ;
       }
     });
 
