@@ -1,11 +1,8 @@
 name: spa_flutter_cli
 description: A new Flutter project.
 
-
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
 
 environment:
@@ -15,15 +12,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-  cupertino_icons: ^1.0.2
+  http: ^0.13.3
+  envify: ^2.0.2
+  cupertino_icons: ^1.0.3
+  dart_jsonwebtoken: ^2.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  envify_generator: ^2.0.2
+  build_runner: ^2.1.2
+  build_test: ^2.1.3
 
-  flutter_lints: ^1.0.0
+
+  flutter_lints: ^1.0.4
 
 
 flutter:

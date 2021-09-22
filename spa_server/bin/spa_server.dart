@@ -6,6 +6,7 @@ void main(List<String> arguments) async {
   const port = Env.serverPort;
   const dbname = Env.sqliteName;
   const serverHost = Env.serverHost;
+  const serverPort  = Env.serverPort;
 
   final tokenService = TokenService(RedisConnection(), secret);
 
