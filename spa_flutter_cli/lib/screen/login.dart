@@ -87,7 +87,8 @@ class Login extends StatelessWidget {
       form.save();
       print(" callinf fun email + password was :" + _email + _password);
       var _apiResponse = await authenticateUser(_email, _password);
-      if ((_apiResponse.ApiError as ApiError) == null) {
+      print('handle_submtted---');
+      if ( (_apiResponse.ApiError as ApiError).toJson()['error'] == "200") {
         _saveAndRedirectToHome(context, _apiResponse);
       } else {
         showInSnackBar(context, (_apiResponse.ApiError as ApiError).error);
@@ -95,11 +96,12 @@ class Login extends StatelessWidget {
     }
   }
 
-  void _saveAndRedirectToHome(
-      BuildContext context, ApiResponse _apiResponse) async {
+  void _saveAndRedirectToHome(BuildContext context, ApiResponse _apiResponse) async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? _userId = (_apiResponse.Data as User).id;
     await prefs.setString("userId", _userId!);
+    print(_userId);
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName('/home'),
         arguments: (_apiResponse.Data as User));

@@ -20,7 +20,8 @@ Future<ApiResponse> getUserDetails(String userId) async {
 
     switch (response.statusCode) {
       case 200:
-        _apiResponse.Data = User.fromJson(json.decode(response.body));
+        _apiResponse.Data = User.fromJson(response.body);
+        print('end success 200');
         break;
       case 401:
         print((_apiResponse.ApiError as ApiError).error);
@@ -68,11 +69,12 @@ Future<ApiResponse> getUserDetails(String userId) async {
         print('----1-----');
         final String _token = json.decode(response.body)['token'];
         print (   '{\"id\": \"$_token\", \"email\": \"$email\" ,  \"password\": \"$password\" }');
+
         _apiResponse.Data = User.fromJson(
             '{\"id\": \"$_token\", \"email\": \"$email\" ,  \"password\": \"$password\" }'
         ) ;
         print('----------2-------');
-
+        _apiResponse.ApiError = ApiError.fromJson({ "error":  "200"} );
         break;
       case 401:
         _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));

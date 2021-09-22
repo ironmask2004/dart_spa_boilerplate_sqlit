@@ -16,21 +16,26 @@ class User {
     _id = id;
     _email = email;
     _password = password;
-    _salt = salt;
+    _salt = 'salt';
   }
 
-  User.fromJson(dynamic json) {
-    _id = json['id'];
-    _email = json['email'];
-    _password = json['password'];
-    _salt = json['salt'];
+  User.fromJson(dynamic _json) {
+    print('from Jeson ' + _json.toString());
+   // print('id:' + _json['id']);
+    _id = json.decode(_json)['id'];
+ //   print('email:' + _json['email']);
+    _email = json.decode(_json)['email'];
+ //   print('password:' + _json['password']);
+    _password =  json.decode(_json)['password'];
+    _salt = 'salt'; // json['salt'];
+    print('end from jeson');
   }
 
   User._fromJson(dynamic json) {
     _id = json['id'];
     _email = json['email'];
     _password = json['password'];
-    _salt = json['salt'];
+    _salt = 'salt'; // json['salt'];
   }
 
   String? _id;
