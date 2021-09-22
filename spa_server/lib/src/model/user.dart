@@ -17,6 +17,7 @@ class User {
     _salt = salt;
   }
 
+
   User.fromJson(dynamic json) {
     _id = json['id'];
     _email = json['email'];

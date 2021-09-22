@@ -55,6 +55,7 @@ class AuthApi {
       return Response.ok('Successfully registered user');
     });
 
+
     ///------ LOGiN
     router.post('/login', (Request req) async {
       final payload = await req.readAsString();
