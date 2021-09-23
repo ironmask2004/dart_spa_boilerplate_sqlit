@@ -8,20 +8,29 @@ curl --location --request GET 'localhost:9093/users/' \
 Future<ApiResponse> getUserDetails(String userId) async {
   ApiResponse _apiResponse = ApiResponse();
   try {
-    var url = new Uri.http(Env.baseUrl, "users/");
+    var url = new Uri.http(Env.baseUrl, "users/info/");
     Map<String, String> _headers = {
       'content-type': 'application/json',
-      'accept': 'application/json',
-      'authorization': 'Bearer ' + userId
+
+    //  'accept': 'application/json',
+      'authorization':
+          'Bearer   $userId'
     };
+
+    print(url.toString() + " Headrs:  " + _headers.toString());
 
     final client = http.Client();
     final http.Response response = await client.get(url, headers: _headers);
+  //  final response =await client.get(url,
+   //     headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $userId"});
+
+    print(' Get returned response:' + response.statusCode.toString() + '  returned body:'  +response.body  );
 
     switch (response.statusCode) {
       case 200:
         _apiResponse.Data = User.fromJson(response.body);
         print('end success 200');
+        _apiResponse.ApiError = ApiError.fromJson({"error": "200"});
         break;
       case 401:
         print((_apiResponse.ApiError as ApiError).error);
@@ -43,7 +52,7 @@ Future<ApiResponse> getUserDetails(String userId) async {
 --data-raw '{"email": "melocalcom1" , "password": "123456"}'
  */
 
- Future<ApiResponse> authenticateUser(String email, String password) async {
+Future<ApiResponse> authenticateUser(String email, String password) async {
   ApiResponse _apiResponse = new ApiResponse();
 
   try {
@@ -52,35 +61,35 @@ Future<ApiResponse> getUserDetails(String userId) async {
       'content-type': 'application/json',
       'accept': 'application/json',
       //   'authorization':  'Bearer ' + userId
-     // --header 'Content-Type: text/plain' \
-     // --data-raw '{"email": "melocalcom1" , "password": "123456"}'
+      // --header 'Content-Type: text/plain' \
+      // --data-raw '{"email": "melocalcom1" , "password": "123456"}'
     };
 
-
-
     final client = http.Client();
-    final http.Response response = await client.post(url, headers: _headers, body:
-    '{ \"email\": \"$email\" ,  \"password\": \"$password\" }');
+    final http.Response response = await client.post(url,
+        headers: _headers,
+        body: '{ \"email\": \"$email\" ,  \"password\": \"$password\" }');
 
-
-    print ('response: ' + response.statusCode.toString()  + '====' + response.body.toString() );
+    print('response: ' +
+        response.statusCode.toString() +
+        '====' +
+        response.body.toString());
     switch (response.statusCode) {
       case 200:
         print('----1-----');
         final String _token = json.decode(response.body)['token'];
-        print (   '{\"id\": \"$_token\", \"email\": \"$email\" ,  \"password\": \"$password\" }');
+        print(
+            '{\"id\": \"$_token\", \"email\": \"$email\" ,  \"password\": \"$password\" }');
 
         _apiResponse.Data = User.fromJson(
-            '{\"id\": \"$_token\", \"email\": \"$email\" ,  \"password\": \"$password\" }'
-        ) ;
+            '{\"id\": \"$_token\", \"email\": \"$email\" ,  \"password\": \"$password\" }');
         print('----------2-------');
-        _apiResponse.ApiError = ApiError.fromJson({ "error":  "200"} );
+        _apiResponse.ApiError = ApiError.fromJson({"error": "200"});
         break;
       case 401:
         _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
         break;
       case 403:
-
         _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
         break;
       default:
@@ -88,10 +97,7 @@ Future<ApiResponse> getUserDetails(String userId) async {
         break;
     }
   } on SocketException {
-
     _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
   }
   return _apiResponse;
 }
-
-

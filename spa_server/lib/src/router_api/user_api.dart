@@ -6,9 +6,10 @@ class UserApi {
   UserApi(this.db, this.store);
   Handler get router {
     final router = Router();
-    router.get('/', (Request req) async {
+    router.get('/info/', (Request req) async {
       final authDetails = req.context['authDetails'] as JWT;
       print('authDetails.subject.toString ' + authDetails.subject.toString());
+
       User Curr_user = await User.findById( authDetails.subject.toString(), db);
        print ("founded_user------:" + Curr_user.email!);
           return Response.ok('{ "email": "${Curr_user.email}" }', headers: {

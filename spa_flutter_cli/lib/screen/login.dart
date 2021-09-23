@@ -34,6 +34,7 @@ class Login extends StatelessWidget {
                           key: Key("_email"),
                           decoration: const InputDecoration(labelText: "email"),
                           keyboardType: TextInputType.text,
+                          initialValue: 'melocalcom1',
                           onSaved: (value) {
                             _email = value!;
                           },
@@ -47,6 +48,7 @@ class Login extends StatelessWidget {
                         TextFormField(
                           decoration: InputDecoration(labelText: "Password"),
                           obscureText: true,
+                          initialValue: '123456',
                           onSaved: (value) {
                             _password = value!;
                             print('saved password:' +_password  );
@@ -101,7 +103,13 @@ class Login extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? _userId = (_apiResponse.Data as User).id;
     await prefs.setString("userId", _userId!);
-    print(_userId);
+    print("saved User_Id" + _userId);
+
+    var _userId2 = (prefs.getString('userId') ?? "");
+    print ('reaeding shared prefrances UserID:' + _userId2 );
+
+      prefs.commit();
+
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName('/home'),
         arguments: (_apiResponse.Data as User));
