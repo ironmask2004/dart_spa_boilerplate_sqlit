@@ -8,10 +8,12 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 Middleware handleCors() {
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-    'Access-Control-Allow-Headers': 'Origin, Content-Type',
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Headers": "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
   };
+
 
   return createMiddleware(
     requestHandler: (Request request) {
@@ -93,7 +95,8 @@ Middleware checkAuthorisation() {
   return createMiddleware(
     requestHandler: (Request request) {
       if (request.context['authDetails'] == null) {
-        return Response.forbidden('Not authorised to perform this action.');
+        //return Response.forbidden('Not authorised to perform this action.');
+        return Response.forbidden("{ \"error\" : \"Not authorised to perform this action\" }");
       }
       return null;
     },

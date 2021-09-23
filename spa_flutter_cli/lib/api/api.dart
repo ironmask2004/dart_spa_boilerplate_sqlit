@@ -11,10 +11,9 @@ Future<ApiResponse> getUserDetails(String userId) async {
     var url = new Uri.http(Env.baseUrl, "users/info/");
     Map<String, String> _headers = {
       'content-type': 'application/json',
-
-    //  'accept': 'application/json',
+      'accept': 'application/json',
       'authorization':
-          'Bearer   $userId'
+          'Bearer $userId'
     };
 
     print(url.toString() + " Headrs:  " + _headers.toString());
@@ -25,7 +24,7 @@ Future<ApiResponse> getUserDetails(String userId) async {
    //     headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $userId"});
 
     print(' Get returned response:' + response.statusCode.toString() + '  returned body:'  +response.body  );
-
+    _apiResponse.ApiError = ApiError.fromJson({"error": "200"});
     switch (response.statusCode) {
       case 200:
         _apiResponse.Data = User.fromJson(response.body);
@@ -34,6 +33,12 @@ Future<ApiResponse> getUserDetails(String userId) async {
         break;
       case 401:
         print((_apiResponse.ApiError as ApiError).error);
+        _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+        break;
+      case 403:
+        print("Not authorised to perform this action--------------------------->>>");
+        print((_apiResponse.ApiError as ApiError).error);
+
         _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
         break;
       default:
