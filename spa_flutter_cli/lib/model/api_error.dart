@@ -1,7 +1,7 @@
 import 'package:spa_flutter_cli/exp_library.dart';
 
 class ApiError {
- late String _error;
+  late String _error;
 
   ApiError({required String error}) {
     this._error = error;
@@ -11,7 +11,7 @@ class ApiError {
   set error(String error) => _error = error;
 
   ApiError.fromJson(Map<String, dynamic> json) {
-     print("----------------"  + json.toString());
+    print("----------------" + json.toString());
     _error = json['error'];
   }
 
@@ -20,5 +20,4 @@ class ApiError {
     data['error'] = this._error;
     return data;
   }
-
 }

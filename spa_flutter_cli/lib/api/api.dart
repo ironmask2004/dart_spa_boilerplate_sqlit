@@ -12,20 +12,22 @@ Future<ApiResponse> getUserDetails(String userId) async {
     Map<String, String> _headers = {
       'content-type': 'application/json',
       'accept': 'application/json',
-      'authorization':
-          'Bearer $userId'
+      'authorization': 'Bearer $userId'
     };
 
     print(url.toString() + " Headrs:  " + _headers.toString());
 
     final client = http.Client();
     final http.Response response = await client.get(url, headers: _headers);
-  //  final response =await client.get(url,
-   //     headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $userId"});
+    //  final response =await client.get(url,
+    //     headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $userId"});
 
-    print(' Get returned response:' + response.statusCode.toString() + '  returned body:'  +response.body  );
+    print(' Get returned response:' +
+        response.statusCode.toString() +
+        '  returned body:' +
+        response.body);
 
-    final _response =response.statusCode;
+    final _response = response.statusCode;
     _apiResponse.ApiError = ApiError.fromJson({"error": "$_response"});
     switch (response.statusCode) {
       case 200:
@@ -38,7 +40,8 @@ Future<ApiResponse> getUserDetails(String userId) async {
         _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
         break;
       case 403:
-        print("Not authorised to perform this action--------------------------->>>");
+        print(
+            "Not authorised to perform this action--------------------------->>>");
         print((_apiResponse.ApiError as ApiError).error);
 
         _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));

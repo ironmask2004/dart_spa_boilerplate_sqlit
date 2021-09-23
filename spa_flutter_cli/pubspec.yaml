@@ -16,7 +16,7 @@ dependencies:
   envify: ^2.0.2
   cupertino_icons: ^1.0.3
   dart_jsonwebtoken: ^2.3.2
-  shared_preferences:
+  shared_preferences: ^2.0.8
 
 dev_dependencies:
   flutter_test:

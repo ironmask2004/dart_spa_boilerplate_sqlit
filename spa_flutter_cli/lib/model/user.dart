@@ -21,12 +21,12 @@ class User {
 
   User.fromJson(dynamic _json) {
     print('from Jeson ' + _json.toString());
-   // print('id:' + _json['id']);
+    // print('id:' + _json['id']);
     _id = json.decode(_json)['id'];
- //   print('email:' + _json['email']);
+    //   print('email:' + _json['email']);
     _email = json.decode(_json)['email'];
- //   print('password:' + _json['password']);
-    _password =  json.decode(_json)['password'];
+    //   print('password:' + _json['password']);
+    _password = json.decode(_json)['password'];
     _salt = 'salt'; // json['salt'];
     print('end from jeson');
   }
@@ -56,6 +56,4 @@ class User {
     map['salt'] = _salt;
     return map;
   }
-
-
 }
