@@ -24,7 +24,9 @@ Future<ApiResponse> getUserDetails(String userId) async {
    //     headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $userId"});
 
     print(' Get returned response:' + response.statusCode.toString() + '  returned body:'  +response.body  );
-    _apiResponse.ApiError = ApiError.fromJson({"error": "200"});
+
+    final _response =response.statusCode;
+    _apiResponse.ApiError = ApiError.fromJson({"error": "$_response"});
     switch (response.statusCode) {
       case 200:
         _apiResponse.Data = User.fromJson(response.body);

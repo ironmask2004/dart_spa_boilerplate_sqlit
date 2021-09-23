@@ -25,7 +25,8 @@ class _LandingState extends State<Landing> {
           context, '/login', ModalRoute.withName('/login'));
     } else {
       ApiResponse _apiResponse = await getUserDetails(_userId);
-      if ((_apiResponse.ApiError as ApiError) == null) {
+      print("=====================" + (_apiResponse.ApiError as ApiError).toJson()['error']);
+      if ((_apiResponse.ApiError as ApiError).toJson()['error'] =="200") {
         Navigator.pushNamedAndRemoveUntil(
             context, '/home', ModalRoute.withName('/home'),
             arguments: (_apiResponse.Data as User));
