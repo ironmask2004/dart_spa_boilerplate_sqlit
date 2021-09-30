@@ -1,7 +1,6 @@
 import 'package:spa_flutter_cli/exp_library.dart';
 
 class Login extends StatelessWidget {
-  // const Login({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
   String _email = "";
@@ -83,7 +82,7 @@ class Login extends StatelessWidget {
 
   void _handleSubmitted(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int counter = (prefs.getInt('counter') ?? 0) + 1;
+    int counter = (prefs.getInt('counter') ?? 0) +  1;
     await prefs.setInt('counter', counter);
     print(
         '=======================================================  Pressed $counter times.');
