@@ -87,9 +87,9 @@ class Login extends StatelessWidget {
           context, 'Please fix the errors in red before submitting.');
     } else {
       form.save();
-      print(" callinf fun email + password was :" + _email + _password);
+      print(" calling func email + password was :" + _email + _password);
       var _apiResponse = await authenticateUser(_email, _password);
-      print('handle_submtted---');
+      print('handle_submtted---  ' +(_apiResponse.ApiError as ApiError).toJson()['error'] );
       if ( (_apiResponse.ApiError as ApiError).toJson()['error'] == "200") {
         _saveAndRedirectToHome(context, _apiResponse);
       } else {
@@ -99,16 +99,18 @@ class Login extends StatelessWidget {
   }
 
   void _saveAndRedirectToHome(BuildContext context, ApiResponse _apiResponse) async {
+    print( '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> _saveAndRedirectToHome: UserId:' +  User.id! ) ;// User.id = _apiResponse.Data.id;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? _userId = (_apiResponse.Data as User).id;
+    final String? _userId = User.id ;
     await prefs.setString("userId", _userId!);
-    print("saved User_Id" + _userId);
+   // print("saved User_Id" + _userId);
 
-    var _userId2 = (prefs.getString('userId') ?? "");
+
+   /* var _userId2 = (prefs.getString('userId') ?? "");
     print ('reaeding shared prefrances UserID:' + _userId2 );
-
-      prefs.commit();
+*/
+     prefs.commit();
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName('/home'),

@@ -1,7 +1,7 @@
 /// id : "6144eb3df4fe4c649dbcd39a"
 /// email : "melocalco32"
 /// password : "9323d01a9da861564b93e6b73154bdeb632880f158f74fc5764520381549ae81"
-/// salt : "CXvGYr7MzMTw7Kv3mVLL9AIjTmv7Kok7RKQXVz8sf1I"
+/// userType : "CXvGYr7MzMTw7Kv3mVLL9AIjTmv7Kok7RKQXVz8sf1I"
 
 import 'package:spa_flutter_cli/exp_library.dart';
 import 'package:http/http.dart' as http;
@@ -11,13 +11,15 @@ class User {
     String? id,
     String? email,
     String? password,
-    String? salt,
+    String? userType,
   }) {
     _id = id;
     _email = email;
     _password = password;
-    _salt = 'salt';
+    _userType =(  userType ==null ?  'User' : userType) ;
   }
+
+  // User(){ }
 
   User.fromJson(dynamic _json) {
     print('from Jeson ' + _json.toString());
@@ -27,33 +29,38 @@ class User {
     _email = json.decode(_json)['email'];
     //   print('password:' + _json['password']);
     _password = json.decode(_json)['password'];
-    _salt = 'salt'; // json['salt'];
+    _userType = 'user'; // json['userType'];
     print('end from jeson');
   }
 
-  User._fromJson(dynamic json) {
+ User._fromJson(dynamic json) {
     _id = json['id'];
     _email = json['email'];
     _password = json['password'];
-    _salt = 'salt'; // json['salt'];
+    _userType = 'user'; // json['userType'];
   }
 
-  String? _id;
-  String? _email;
-  String? _password;
-  String? _salt;
+  static String? _id;
+  static String? _email;
+  static String? _password;
+  static String? _userType;
 
-  String? get id => _id;
-  String? get email => _email;
-  String? get password => _password;
-  String? get salt => _salt;
+  static String? get  id => _id;
+  static String? get email => _email;
+  static  String? get password => _password;
+  static  String? get userType => _userType;
 
-  Map<String, dynamic> toJson() {
+  static void set id(String? id) {  _id = id;}
+  static void set email(String? email) {  _email = email;}
+  static void set password(String? password) {  _password = password;}
+  static void set userType(String? userType) {  _userType = userType;}
+
+  static Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['email'] = _email;
     map['password'] = _password;
-    map['salt'] = _salt;
+    map['userType'] = _userType;
     return map;
   }
 }

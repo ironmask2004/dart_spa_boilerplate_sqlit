@@ -13,7 +13,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _handleLogout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    logOutUser(User.id!);
     prefs.remove('userId');
+
     Navigator.pushNamedAndRemoveUntil(
         context, '/login', ModalRoute.withName('/login'));
   }

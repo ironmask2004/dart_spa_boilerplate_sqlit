@@ -14,14 +14,9 @@ Future<ApiResponse> getUserDetails(String userId) async {
       'accept': 'application/json',
       'authorization': 'Bearer $userId'
     };
-
     print(url.toString() + " Headrs:  " + _headers.toString());
-
     final client = http.Client();
     final http.Response response = await client.get(url, headers: _headers);
-    //  final response =await client.get(url,
-    //     headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $userId"});
-
     print(' Get returned response:' +
         response.statusCode.toString() +
         '  returned body:' +
@@ -32,7 +27,7 @@ Future<ApiResponse> getUserDetails(String userId) async {
     switch (response.statusCode) {
       case 200:
         _apiResponse.Data = User.fromJson(response.body);
-        print('end success 200');
+        print('get user details success 200');
         _apiResponse.ApiError = ApiError.fromJson({"error": "200"});
         break;
       case 401:
@@ -66,24 +61,19 @@ Future<ApiResponse> authenticateUser(String email, String password) async {
   ApiResponse _apiResponse = new ApiResponse();
 
   try {
-    var url = new Uri.http(Env.baseUrl, "/auth/login");
-    Map<String, String> _headers = {
-      'content-type': 'application/json',
-      'accept': 'application/json',
-      //   'authorization':  'Bearer ' + userId
-      // --header 'Content-Type: text/plain' \
-      // --data-raw '{"email": "melocalcom1" , "password": "123456"}'
-    };
-
-    final client = http.Client();
-    final http.Response response = await client.post(url,
-        headers: _headers,
-        body: '{ \"email\": \"$email\" ,  \"password\": \"$password\" }');
+    final _url = Uri.parse('http://' + Env.baseUrl + "/auth/login");
+    final _headers = {"Content-type": "application/json"};
+    final _json = '{ \"email\": \"$email\" ,  \"password\": \"$password\" }';
+    final http.Response response =
+        await http.post(_url, headers: _headers, body: _json);
+    print('Status code: ${response.statusCode}');
+    print('Body: ${response.body}');
 
     print('response: ' +
         response.statusCode.toString() +
         '====' +
         response.body.toString());
+    print('start responce analyize');
     switch (response.statusCode) {
       case 200:
         print('----1-----');
@@ -103,6 +93,57 @@ Future<ApiResponse> authenticateUser(String email, String password) async {
         _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
         break;
       default:
+        _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+        break;
+    }
+  } on SocketException {
+    _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+  }
+  return _apiResponse;
+}
+
+
+Future<ApiResponse> logOutUser(String userId) async {
+  ApiResponse _apiResponse = ApiResponse();
+  try {
+    var url = new Uri.http(Env.baseUrl, "users/logout");
+    Map<String, String> _headers = {
+      'content-type': 'application/json',
+      'accept': 'application/json',
+      'authorization': 'Bearer $userId'
+    };
+   // print(url.toString() + " Headrs:  " + _headers.toString());
+    final client = http.Client();
+    final http.Response response = await client.post(url, headers: _headers);
+   /* print(' Get returned response:' +
+        response.statusCode.toString() +
+        '  returned body:' +
+        response.body);
+*/
+    final _response = response.statusCode;
+    print("LLLLLLLLLLLLLLLLLLLLLLogout + error $_response");
+
+    _apiResponse.ApiError = ApiError.fromJson({"error": "$_response"});
+
+    switch (response.statusCode) {
+      case 200:
+       // _apiResponse.Data = User.fromJson(response.body);
+        print('logOut User  end success 200');
+        _apiResponse.ApiError = ApiError.fromJson({"error": "200"});
+        break;
+      case 401:
+        print((_apiResponse.ApiError as ApiError).error);
+        _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+        break;
+      case 403:
+        print(
+            "Not authorised to perform this action--------------------------->>>");
+        print((_apiResponse.ApiError as ApiError).error);
+
+        _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+        break;
+      default:
+        print((_apiResponse.ApiError as ApiError).error);
         _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
         break;
     }

@@ -56,6 +56,7 @@ class AuthApi {
 
     ///------ LOGiN
     router.post('/login', (Request req) async {
+      print('----------Start Login REquest -------------');
       final payload = await req.readAsString();
       final userInfo = json.decode(payload);
       final email = userInfo['email'];
@@ -81,18 +82,19 @@ class AuthApi {
       print(resultSet.first.toString());
       final user = ({
         'id': resultSet.first['id'],
-        'id': resultSet.first['id'],
         'email': resultSet.first['email'],
         'password': resultSet.first['password'],
         'salt': resultSet.first['salt']
       });
       // final user = resultSet.toList ();
       print(user.toString());
+
       final hashedPassword = hashPassword(password, user['salt']);
       if (hashedPassword != user['password']) {
         return Response.forbidden(
             "{ \"error\" : \"Incorrect user and/or password\" }");
       }
+
       ;
 
       // Generate JWT and send with response
@@ -106,6 +108,8 @@ class AuthApi {
           HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
         });
       } catch (e) {
+        print('----------end Login Request--------------');
+
         return Response.internalServerError(
             body: "{ \"error\" : \"" +
                 'There was a problem logging you in. Please try again.' +
@@ -117,7 +121,8 @@ class AuthApi {
     router.post('/logout', (Request req) async {
       final auth = req.context['authDetails'];
       if (auth == null) {
-        return Response.forbidden('Not authorised to perform this operation.');
+        return Response.forbidden('"{ \"error\" : \"Not authorised to perform this operation." }"');
+
       }
 
       try {
@@ -130,6 +135,7 @@ class AuthApi {
 
       return Response.ok('Successfully logged out');
     });
+
 
     router.post('/refreshToken', (Request req) async {
       final payload = await req.readAsString();

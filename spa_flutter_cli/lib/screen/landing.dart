@@ -8,7 +8,7 @@ class Landing extends StatefulWidget {
 }
 
 class _LandingState extends State<Landing> {
-  String _userId = "";
+  // String _userId = "";
 
   @override
   void initState() {
@@ -18,13 +18,12 @@ class _LandingState extends State<Landing> {
 
   _loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _userId = (prefs.getString('userId') ?? "");
-   /* if (  _userId ==""){
-      SharedPreferences.setMockInitialValues ({'userId': ""});
+    User.id = (prefs.getString('userId') ?? "");
+    if (User.id == "") {
+      SharedPreferences.setMockInitialValues({'userId': ""});
     }
-
-    */
-    print('Landing UserID:' + _userId);
+    final String? _userId = User.id;
+    print('Landing UserID:' + _userId!);
     if (_userId == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
@@ -32,7 +31,7 @@ class _LandingState extends State<Landing> {
       ApiResponse _apiResponse = await getUserDetails(_userId);
       print("=====================" +
           (_apiResponse.ApiError as ApiError).toJson()['error']);
-      print ('response data ' + _apiResponse.Data.toString());
+      print('response data ' + _apiResponse.Data.toString());
       if ((_apiResponse.ApiError as ApiError).toJson()['error'] == "200") {
         Navigator.pushNamedAndRemoveUntil(
             context, '/home', ModalRoute.withName('/home'),

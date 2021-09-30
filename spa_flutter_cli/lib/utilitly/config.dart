@@ -8,12 +8,11 @@ part 'config.g.dart';
 
 @Envify()
 abstract class Env {
- // static const secretKey = _Env.secretKey;
- // static const sqliteName = _Env.sqliteName;
- // static const redisHost = _Env.redisHost;
- // static const   redisPort = _Env.redisPort;
-  static const   serverHost = _Env.serverHost;
-  static const   serverPort = _Env.serverPort;
-   static const baseUrl = _Env.baseUrl ;
-
- }
+  // static const secretKey = _Env.secretKey;
+  // static const sqliteName = _Env.sqliteName;
+  // static const redisHost = _Env.redisHost;
+  // static const   redisPort = _Env.redisPort;
+  static const serverHost = _Env.serverHost;
+  static const serverPort = _Env.serverPort;
+  static const baseUrl = _Env.baseUrl;
+}
