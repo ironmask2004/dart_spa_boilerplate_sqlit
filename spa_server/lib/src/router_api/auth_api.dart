@@ -121,8 +121,8 @@ class AuthApi {
     router.post('/logout', (Request req) async {
       final auth = req.context['authDetails'];
       if (auth == null) {
-        return Response.forbidden('"{ \"error\" : \"Not authorised to perform this operation." }"');
-
+        return Response.forbidden(
+            '"{ \"error\" : \"Not authorised to perform this operation." }"');
       }
 
       try {
@@ -135,7 +135,6 @@ class AuthApi {
 
       return Response.ok('Successfully logged out');
     });
-
 
     router.post('/refreshToken', (Request req) async {
       final payload = await req.readAsString();

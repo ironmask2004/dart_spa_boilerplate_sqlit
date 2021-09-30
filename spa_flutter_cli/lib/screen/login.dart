@@ -9,7 +9,6 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         key: _scaffoldkey,
         appBar: AppBar(
@@ -51,7 +50,7 @@ class Login extends StatelessWidget {
                           initialValue: '123456',
                           onSaved: (value) {
                             _password = value!;
-                            print('saved password:' +_password  );
+                            print('saved password:' + _password);
                           },
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -65,8 +64,10 @@ class Login extends StatelessWidget {
                           children: <Widget>[
                             ElevatedButton.icon(
                                 onPressed: () {
-                                  print("email + password was :" + _email + _password);
-                                   _handleSubmitted(context );
+                                  print("email + password was :" +
+                                      _email +
+                                      _password);
+                                  _handleSubmitted(context);
                                 },
                                 icon: Icon(Icons.arrow_forward),
                                 label: Text('Sign in')),
@@ -81,16 +82,24 @@ class Login extends StatelessWidget {
   }
 
   void _handleSubmitted(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int counter = (prefs.getInt('counter') ?? 0) + 1;
+    await prefs.setInt('counter', counter);
+    print(
+        '=======================================================  Pressed $counter times.');
+
     final FormState? form = _formKey.currentState;
     if (!form!.validate()) {
       showInSnackBar(
           context, 'Please fix the errors in red before submitting.');
     } else {
       form.save();
+
       print(" calling func email + password was :" + _email + _password);
       var _apiResponse = await authenticateUser(_email, _password);
-      print('handle_submtted---  ' +(_apiResponse.ApiError as ApiError).toJson()['error'] );
-      if ( (_apiResponse.ApiError as ApiError).toJson()['error'] == "200") {
+      print('handle_submtted---  ' +
+          (_apiResponse.ApiError as ApiError).toJson()['error']);
+      if ((_apiResponse.ApiError as ApiError).toJson()['error'] == "200") {
         _saveAndRedirectToHome(context, _apiResponse);
       } else {
         showInSnackBar(context, (_apiResponse.ApiError as ApiError).error);
@@ -98,19 +107,20 @@ class Login extends StatelessWidget {
     }
   }
 
-  void _saveAndRedirectToHome(BuildContext context, ApiResponse _apiResponse) async {
-    print( '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> _saveAndRedirectToHome: UserId:' +  User.id! ) ;// User.id = _apiResponse.Data.id;
+  void _saveAndRedirectToHome(
+      BuildContext context, ApiResponse _apiResponse) async {
+    print('>> _saveAndRedirectToHome: UserId:' +
+        User.id!); // User.id = _apiResponse.Data.id;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? _userId = User.id ;
+    final String? _userId = User.id;
     await prefs.setString("userId", _userId!);
-   // print("saved User_Id" + _userId);
+    // print("saved User_Id" + _userId);
 
-
-   /* var _userId2 = (prefs.getString('userId') ?? "");
+    /* var _userId2 = (prefs.getString('userId') ?? "");
     print ('reaeding shared prefrances UserID:' + _userId2 );
 */
-     prefs.commit();
+    prefs.commit();
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName('/home'),

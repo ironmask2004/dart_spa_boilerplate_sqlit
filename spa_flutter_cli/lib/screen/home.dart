@@ -25,15 +25,15 @@ class _MyHomePageState extends State<MyHomePage> {
     final Object? args = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Home"),
+          title: Text(User.email!),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-             // Text("Welcome back " + args?.name + "!"),
-              //Text("Last login was on " + args.lastLogin),
+              Text("Welcome back " + User.email! + "!"),
+              Text("Last login was on " 'args.lastLogin' ),
               //Text("Your Email is  " + args.email),
               ElevatedButton(
                 onPressed: _handleLogout,
