@@ -19,18 +19,21 @@ class _LandingState extends State<Landing> {
   _loadUserInfo() async {
     User.id = await MySharedPreferences.instance.getStringValue('userId');
 
-    print('================= get USER ID============= ' + User.id.toString());
+    print('================= get USER ID  ============= ' + User.id!);
 
     final String? _userId = User.id;
-    //print('Landing UserID:' + _userId!);
+
+    print('Landing UserID:' + _userId!);
     if (_userId == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
     } else {
-      ApiResponse _apiResponse = await getUserDetails(_userId!);
-      print("=====================" +
-          (_apiResponse.ApiError as ApiError).toJson()['error']);
-      print('response data ' + _apiResponse.Data.toString());
+      ApiResponse _apiResponse = await getUserDetails(_userId);
+
+      /// print("=======+++++++==============" +
+      ///     (_apiResponse.ApiError as ApiError).toJson()['error']);
+      ////print('response data ' + _apiResponse.Data.toString());
+
       if ((_apiResponse.ApiError as ApiError).toJson()['error'] == "200") {
         Navigator.pushNamedAndRemoveUntil(
             context, '/home', ModalRoute.withName('/home'),

@@ -33,7 +33,7 @@ void main(List<String> arguments) async {
       .addMiddleware(handleAuth(secret))
       .addHandler(app);
 
-  print('HTTP Service running on port $port');
+  print('HTTP Service running on  $serverHost port $port');
   await serve(handler, serverHost, int.parse(serverPort));
 
   //await serve(app, 'localhost', int.parse(serverPort));

@@ -30,11 +30,11 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text("Welcome back " + User.email! + "!"),
-              Text("Last login was on " 'args.lastLogin'),
+              const Text('Last login was on  args.lastLogin'),
               //Text("Your Email is  " + args.email),
               ElevatedButton(
                 onPressed: _handleLogout,
-                child: Text("Logout"),
+                child: const Text("Logout"),
               )
             ],
           ),

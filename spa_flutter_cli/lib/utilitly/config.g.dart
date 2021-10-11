@@ -9,5 +9,5 @@ part of 'config.dart';
 class _Env {
   static const serverHost = 'localhost';
   static const serverPort = '9093';
-  static const baseUrl = '192.168.0.3:9093';
+  static const baseUrl = '192.168.1.5:9093';
 }

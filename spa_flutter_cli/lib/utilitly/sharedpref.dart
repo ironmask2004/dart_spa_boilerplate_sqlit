@@ -12,6 +12,9 @@ class MySharedPreferences {
   static final _isLinux = Platform.isLinux;
 
   setStringValue(String key, String value) async {
+    print('set   USER ID to  SHARED SECURE STORAGE');
+    print('------------------------------');
+
     final storage = FlutterSecureStorage();
 
     if (_isLinux) {
