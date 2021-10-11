@@ -81,11 +81,12 @@ class Login extends StatelessWidget {
   }
 
   void _handleSubmitted(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int counter = (prefs.getInt('counter') ?? 0) +  1;
-    await prefs.setInt('counter', counter);
-    print(
-        '=======================================================  Pressed $counter times.');
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // int counter = (prefs.getInt('counter') ?? 0) +  1;
+    // await prefs.setInt('counter', counter);
+    // print(
+    //    '=======================================================  Pressed $counter times.');
 
     final FormState? form = _formKey.currentState;
     if (!form!.validate()) {
@@ -111,15 +112,19 @@ class Login extends StatelessWidget {
     print('>> _saveAndRedirectToHome: UserId:' +
         User.id!); // User.id = _apiResponse.Data.id;
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    final storage = new FlutterSecureStorage();
+
     final String? _userId = User.id;
-    await prefs.setString("userId", _userId!);
+//    await prefs.setString("userId", _userId!);
+    await storage.write(key: 'userId', value: _userId!);
+
     // print("saved User_Id" + _userId);
 
     /* var _userId2 = (prefs.getString('userId') ?? "");
     print ('reaeding shared prefrances UserID:' + _userId2 );
 */
-    prefs.commit();
+    //  prefs.commit();
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName('/home'),

@@ -1,20 +1,21 @@
 import 'package:spa_flutter_cli/exp_library.dart';
 
-
 class MyHomePage extends StatefulWidget {
- // MyHomePage({  required this.title}) : super(key: key);
-  final String title ="ewrwerw";
+  // MyHomePage({  required this.title}) : super(key: key);
+  final String title = "ewrwerw";
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   void _handleLogout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    final storage = new FlutterSecureStorage();
+
     logOutUser(User.id!);
-    prefs.remove('userId');
+    //prefs.remove('userId');
+    await storage.delete(key: 'userId');
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/login', ModalRoute.withName('/login'));
@@ -33,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text("Welcome back " + User.email! + "!"),
-              Text("Last login was on " 'args.lastLogin' ),
+              Text("Last login was on " 'args.lastLogin'),
               //Text("Your Email is  " + args.email),
               ElevatedButton(
                 onPressed: _handleLogout,

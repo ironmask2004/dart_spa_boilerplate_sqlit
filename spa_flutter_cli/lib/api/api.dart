@@ -102,7 +102,6 @@ Future<ApiResponse> authenticateUser(String email, String password) async {
   return _apiResponse;
 }
 
-
 Future<ApiResponse> logOutUser(String userId) async {
   ApiResponse _apiResponse = ApiResponse();
   try {
@@ -112,10 +111,10 @@ Future<ApiResponse> logOutUser(String userId) async {
       'accept': 'application/json',
       'authorization': 'Bearer $userId'
     };
-   // print(url.toString() + " Headrs:  " + _headers.toString());
+    print(url.toString() + " Headrs:  " + _headers.toString());
     final client = http.Client();
     final http.Response response = await client.post(url, headers: _headers);
-   /* print(' Get returned response:' +
+    /* print(' Get returned response:' +
         response.statusCode.toString() +
         '  returned body:' +
         response.body);
@@ -127,7 +126,7 @@ Future<ApiResponse> logOutUser(String userId) async {
 
     switch (response.statusCode) {
       case 200:
-       // _apiResponse.Data = User.fromJson(response.body);
+        // _apiResponse.Data = User.fromJson(response.body);
         print('logOut User  end success 200');
         _apiResponse.ApiError = ApiError.fromJson({"error": "200"});
         break;

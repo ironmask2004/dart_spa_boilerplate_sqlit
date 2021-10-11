@@ -17,11 +17,14 @@ class _LandingState extends State<Landing> {
   }
 
   _loadUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    User.id = (prefs.getString('userId') ?? "");
-    if (User.id == "") {
-      SharedPreferences.setMockInitialValues({'userId': ""});
-    }
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    final storage = new FlutterSecureStorage();
+
+    User.id = await storage.read(key: 'userId') ?? "";
+    // if (User.id == "") {
+    // SharedPreferences.setMockInitialValues({'userId': ""});
+    // }
+
     final String? _userId = User.id;
     print('Landing UserID:' + _userId!);
     if (_userId == "") {

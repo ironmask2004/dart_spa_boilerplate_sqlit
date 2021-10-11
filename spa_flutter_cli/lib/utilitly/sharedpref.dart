@@ -1,34 +1,38 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MySharedPreferences {
   MySharedPreferences._privateConstructor();
 
   static final MySharedPreferences instance =
-  MySharedPreferences._privateConstructor();
+      MySharedPreferences._privateConstructor();
 
   setStringValue(String key, String value) async {
-    SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    myPrefs.setString(key, value);
+    final storage = FlutterSecureStorage();
+
+    await storage.write(key: key, value: value);
   }
 
   Future<String> getStringValue(String key) async {
-    SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    return myPrefs.getString(key) ?? "";
+    final storage = FlutterSecureStorage();
+
+    return (await storage.read(key: key)) ?? "";
   }
 
   Future<bool> containsKey(String key) async {
-    SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    return myPrefs.containsKey(key);
+    final storage = FlutterSecureStorage();
+
+    return storage.containsKey(key: key);
   }
 
   removeValue(String key) async {
-    SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    return myPrefs.remove(key);
+    final storage = FlutterSecureStorage();
+
+    return await storage.delete(key: key);
   }
 
-  removeAll() async{
-    SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    return myPrefs.clear();
-  }
+  removeAll() async {
+    final storage = FlutterSecureStorage();
 
+    return storage.deleteAll();
+  }
 }
