@@ -14,4 +14,5 @@ export 'package:spa_flutter_cli/screen/landing.dart';
 export 'package:spa_flutter_cli/screen/login.dart';
 export 'package:spa_flutter_cli/screen/home.dart';
 //export 'dart:js';
-export 'package:flutter_secure_storage/flutter_secure_storage.dart';
+//export 'package:flutter_secure_storage/flutter_secure_storage.dart';
+export 'package:spa_flutter_cli/utilitly/sharedpref.dart';

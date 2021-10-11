@@ -113,11 +113,10 @@ class Login extends StatelessWidget {
         User.id!); // User.id = _apiResponse.Data.id;
 
     // SharedPreferences prefs = await SharedPreferences.getInstance();
-    final storage = new FlutterSecureStorage();
 
     final String? _userId = User.id;
 //    await prefs.setString("userId", _userId!);
-    await storage.write(key: 'userId', value: _userId!);
+    await MySharedPreferences.instance.setStringValue('userId', _userId!);
 
     // print("saved User_Id" + _userId);
 

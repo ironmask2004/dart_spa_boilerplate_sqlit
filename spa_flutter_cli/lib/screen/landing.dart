@@ -17,21 +17,17 @@ class _LandingState extends State<Landing> {
   }
 
   _loadUserInfo() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    final storage = new FlutterSecureStorage();
+    User.id = await MySharedPreferences.instance.getStringValue('userId');
 
-    User.id = await storage.read(key: 'userId') ?? "";
-    // if (User.id == "") {
-    // SharedPreferences.setMockInitialValues({'userId': ""});
-    // }
+    print('================= get USER ID============= ' + User.id.toString());
 
     final String? _userId = User.id;
-    print('Landing UserID:' + _userId!);
+    //print('Landing UserID:' + _userId!);
     if (_userId == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
     } else {
-      ApiResponse _apiResponse = await getUserDetails(_userId);
+      ApiResponse _apiResponse = await getUserDetails(_userId!);
       print("=====================" +
           (_apiResponse.ApiError as ApiError).toJson()['error']);
       print('response data ' + _apiResponse.Data.toString());

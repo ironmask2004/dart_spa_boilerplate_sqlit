@@ -10,12 +10,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void _handleLogout() async {
-    //SharedPreferences prefs = await SharedPreferences.getInstance();
-    final storage = new FlutterSecureStorage();
-
     logOutUser(User.id!);
-    //prefs.remove('userId');
-    await storage.delete(key: 'userId');
+    await MySharedPreferences.instance.removeValue('userId');
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/login', ModalRoute.withName('/login'));
