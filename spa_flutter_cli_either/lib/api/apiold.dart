@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 curl --location --request GET 'localhost:9093/users/' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzIyNTQzMjksImV4cCI6MTYzMjI1NDQ1OSwic3ViIjoiNjE0OGRmM2M1NWE5NjQ2NzdiNDMxOGZiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdCIsImp0aSI6IjMyYTBmODllLTY3YTItNDgyZC1iZmUzLTMzMzQzYjRjNjMwYiJ9.KQyxOPodML_Zqam7LKGauYCJ0IBqlXKCfjiuGu3WIII'
  */
-Future<ApiResponse> getUserDetails(String userId) async {
+Future<ApiResponse> getUserDetails_tmp(String userId) async {
   ApiResponse _apiResponse = ApiResponse();
   try {
     var url = new Uri.http(Env.baseUrl, "users/info/");
@@ -47,7 +47,8 @@ Future<ApiResponse> getUserDetails(String userId) async {
         break;
     }
   } on SocketException {
-    _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+    _apiResponse.ApiError =
+        ApiError(error: "Server error. Please retry", errorNo: "1999991");
   }
   return _apiResponse;
 }
@@ -57,7 +58,7 @@ Future<ApiResponse> getUserDetails(String userId) async {
 --data-raw '{"email": "melocalcom1" , "password": "123456"}'
  */
 
-Future<ApiResponse> authenticateUser(String email, String password) async {
+Future<ApiResponse> authenticateUser_tmp_(String email, String password) async {
   ApiResponse _apiResponse = new ApiResponse();
 
   try {
@@ -97,12 +98,13 @@ Future<ApiResponse> authenticateUser(String email, String password) async {
         break;
     }
   } on SocketException {
-    _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+    _apiResponse.ApiError =
+        ApiError(error: "Server error. Please retry", errorNo: "1999991");
   }
   return _apiResponse;
 }
 
-Future<ApiResponse> logOutUser(String userId) async {
+Future<ApiResponse> logOutUser_tmp(String userId) async {
   ApiResponse _apiResponse = ApiResponse();
   try {
     var url = new Uri.http(Env.baseUrl, "users/logout");
@@ -147,7 +149,8 @@ Future<ApiResponse> logOutUser(String userId) async {
         break;
     }
   } on SocketException {
-    _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+    _apiResponse.ApiError =
+        ApiError(error: "Server error. Please retry", errorNo: "1999991");
   }
   return _apiResponse;
 }

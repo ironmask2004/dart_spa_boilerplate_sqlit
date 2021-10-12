@@ -1,4 +1,5 @@
 import 'package:spa_flutter_cli/exp_library.dart';
+import 'package:dartz/dartz.dart' as dartz;
 
 class MyHomePage extends StatefulWidget {
   // MyHomePage({  required this.title}) : super(key: key);
@@ -10,16 +11,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void _handleLogout() async {
-    logOutUser(User.id!);
-    await MySharedPreferences.instance.removeValue('userId');
+    print('logout ' + User.id!);
+    final dartz.Either<ApiResponse, String> userInfo =
+        await logOutUser(User.id!);
+    userInfo.fold((left) {
+      showInSnackBar(context, (left.ApiError as ApiError).error);
+    }, (right) async {
+      showInSnackBar(context, ("LogOut Successs!!"));
 
-    Navigator.pushNamedAndRemoveUntil(
-        context, '/login', ModalRoute.withName('/login'));
+      await MySharedPreferences.instance.removeValue('userId');
+
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/login', ModalRoute.withName('/login'));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final Object? args = ModalRoute.of(context)?.settings.arguments;
+    //final Object? args = ModalRoute.of(context)?.settings.arguments;
+    //print(args.toString());
     return Scaffold(
         appBar: AppBar(
           title: Text(User.email!),
@@ -39,5 +49,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ));
+  }
+
+  void showInSnackBar(BuildContext context, String error) {
+    final snackBar = SnackBar(content: Text(error));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

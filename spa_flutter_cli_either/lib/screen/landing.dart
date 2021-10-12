@@ -1,4 +1,5 @@
 import 'package:spa_flutter_cli/exp_library.dart';
+import 'package:dartz/dartz.dart' as dartz;
 
 class Landing extends StatefulWidget {
   const Landing({Key? key}) : super(key: key);
@@ -24,24 +25,17 @@ class _LandingState extends State<Landing> {
       print('Err Getting saved user id');
     }
 
-    //print('================= get USER ID  ============= ' + User.id!);
-
-    //print('Landing UserID:' + _userId!);
-
     if (_userId == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
     } else {
-      ApiResponse _apiResponse = await getUserDetails(_userId);
-
-      /// print("=======+++++++==============" +
-      ///     (_apiResponse.ApiError as ApiError).toJson()['error']);
-      ////print('response data ' + _apiResponse.Data.toString());
-
-      if ((_apiResponse.ApiError as ApiError).toJson()['error'] == "200") {
+      final dartz.Either<ApiResponse, User> _userInfo =
+          await getUserInfo(_userId);
+      if (_userInfo.isRight()) {
+        User.id = _userId;
         Navigator.pushNamedAndRemoveUntil(
             context, '/home', ModalRoute.withName('/home'),
-            arguments: (_apiResponse.Data as User));
+            arguments: (_userInfo));
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, '/login', ModalRoute.withName('/login'));

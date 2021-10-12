@@ -1,4 +1,5 @@
 import 'package:spa_flutter_cli/exp_library.dart';
+import 'package:dartz/dartz.dart' as dartz;
 
 class Login extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -96,19 +97,21 @@ class Login extends StatelessWidget {
       form.save();
 
       print(" calling func email + password was :" + _email + _password);
-      var _apiResponse = await authenticateUser(_email, _password);
-      print('handle_submtted---  ' +
-          (_apiResponse.ApiError as ApiError).toJson()['error']);
-      if ((_apiResponse.ApiError as ApiError).toJson()['error'] == "200") {
-        _saveAndRedirectToHome(context, _apiResponse);
-      } else {
-        showInSnackBar(context, (_apiResponse.ApiError as ApiError).error);
-      }
+
+      final dartz.Either<ApiResponse, User> userInfo =
+          await loginUser(_email, _password);
+      userInfo.fold((left) {
+        showInSnackBar(context, (left.ApiError as ApiError).error);
+      }, (right) {
+        showInSnackBar(context, ("Login Successs!!"));
+
+        print('------------------------------------');
+        _saveAndRedirectToHome(context, right);
+      });
     }
   }
 
-  void _saveAndRedirectToHome(
-      BuildContext context, ApiResponse _apiResponse) async {
+  void _saveAndRedirectToHome(BuildContext context, User userIfo) async {
     print('>> _saveAndRedirectToHome: UserId:' +
         User.id!); // User.id = _apiResponse.Data.id;
 
@@ -118,16 +121,9 @@ class Login extends StatelessWidget {
 //    await prefs.setString("userId", _userId!);
     await MySharedPreferences.instance.setStringValue('userId', _userId!);
 
-    print("saved User_Id===============------------============" + _userId);
-
-    /* var _userId2 = (prefs.getString('userId') ?? "");
-    print ('reaeding shared prefrances UserID:' + _userId2 );
-*/
-    //  prefs.commit();
-
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName('/home'),
-        arguments: (_apiResponse.Data as User));
+        arguments: (userIfo));
   }
 
   void showInSnackBar(BuildContext context, String error) {
