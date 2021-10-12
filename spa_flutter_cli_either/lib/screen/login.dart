@@ -1,4 +1,4 @@
-import 'package:spa_flutter_cli/exp_library.dart';
+import 'package:spa_flutter_cli_either/exp_library.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
 class Login extends StatelessWidget {
@@ -98,16 +98,23 @@ class Login extends StatelessWidget {
 
       print(" calling func email + password was :" + _email + _password);
 
-      final dartz.Either<ApiResponse, User> userInfo =
-          await loginUser(_email, _password);
-      userInfo.fold((left) {
-        showInSnackBar(context, (left.ApiError as ApiError).error);
-      }, (right) {
-        showInSnackBar(context, ("Login Successs!!"));
+      try {
+        final dartz.Either<ApiResponse, User> userInfo =
+            await loginUser(_email, _password);
 
-        print('------------------------------------');
-        _saveAndRedirectToHome(context, right);
-      });
+        userInfo.fold((left) {
+          showInSnackBar(context, (left.ApiError as ApiError).error);
+        }, (right) {
+          showInSnackBar(context, ("Login Successs!!"));
+
+          print('------------------------------------');
+          _saveAndRedirectToHome(context, right);
+        });
+      } catch (err) {
+        print('Error connectiing to server ' + err.toString());
+
+        showInSnackBar(context, 'Error connectiing to server');
+      }
     }
   }
 

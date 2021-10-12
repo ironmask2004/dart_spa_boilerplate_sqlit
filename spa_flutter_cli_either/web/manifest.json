@@ -1,6 +1,6 @@
 {
-    "name": "spa_flutter_cli",
-    "short_name": "spa_flutter_cli",
+    "name": "spa_flutter_cli_either",
+    "short_name": "spa_flutter_cli_either",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

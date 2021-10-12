@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "spa_flutter_cli",
+            "name": "spa_flutter_cli_either",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "spa_flutter_cli (profile mode)",
+            "name": "spa_flutter_cli_either (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"

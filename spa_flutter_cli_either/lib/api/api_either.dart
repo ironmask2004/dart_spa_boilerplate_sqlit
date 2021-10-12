@@ -1,4 +1,4 @@
-import 'package:spa_flutter_cli/exp_library.dart';
+import 'package:spa_flutter_cli_either/exp_library.dart';
 import 'package:http/http.dart' as http;
 import 'package:dartz/dartz.dart';
 
@@ -51,6 +51,9 @@ Future<Either<ApiResponse, User>> loginUser(
     final _json = '{ \"email\": \"$email\" ,  \"password\": \"$password\" }';
     final http.Response response =
         await http.post(_url, headers: _headers, body: _json);
+    print(response.body.toString() +
+        'error No:' +
+        response.statusCode.toString());
     if (response.statusCode == 200) {
       final String _token = json.decode(response.body)['token'];
       _apiResponse.Data = User.fromJson(
@@ -58,6 +61,7 @@ Future<Either<ApiResponse, User>> loginUser(
       _apiResponse.ApiError = ApiError(error: "Login suscess", errorNo: "200");
       return right(_apiResponse.Data as User);
     } else {
+      print('else -----------');
       _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
     }
   } on SocketException {

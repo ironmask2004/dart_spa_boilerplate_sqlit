@@ -1,4 +1,4 @@
-import 'package:spa_flutter_cli/exp_library.dart';
+import 'package:spa_flutter_cli_either/exp_library.dart';
 
 class ApiResponse {
   // _data will hold any response converted into

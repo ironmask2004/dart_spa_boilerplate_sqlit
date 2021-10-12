@@ -1,4 +1,4 @@
-# spa_flutter_cli
+# spa_flutter_cli_either
 
 A new Flutter project.
 

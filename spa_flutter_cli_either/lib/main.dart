@@ -1,4 +1,4 @@
-import 'package:spa_flutter_cli/exp_library.dart';
+import 'package:spa_flutter_cli_either/exp_library.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Landing(),
         '/login': (context) => Login(),
-        '/home': (context) => MyHomePage( ),
+        '/home': (context) => MyHomePage(),
       },
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,

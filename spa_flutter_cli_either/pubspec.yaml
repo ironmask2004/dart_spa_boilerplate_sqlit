@@ -1,4 +1,4 @@
-name: spa_flutter_cli
+name: spa_flutter_cli_either
 description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

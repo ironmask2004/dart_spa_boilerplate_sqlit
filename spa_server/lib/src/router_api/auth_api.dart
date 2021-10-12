@@ -77,7 +77,7 @@ class AuthApi {
           db.select('SELECT *  FROM Users WHERE email = \"' + email + "\"");
       if (resultSet.isEmpty) {
         return Response.forbidden(
-            "{ \"error\" : \"Incorrect user and/or password\" }");
+            "{ \"error\" : \"Incorrect user and/or password\" ,  \"errorNo\" : \"403\"  }");
       }
       print(resultSet.first.toString());
       final user = ({
@@ -92,7 +92,7 @@ class AuthApi {
       final hashedPassword = hashPassword(password, user['salt']);
       if (hashedPassword != user['password']) {
         return Response.forbidden(
-            "{ \"error\" : \"Incorrect user and/or password\" }");
+            "{ \"error\" : \"Incorrect user and/or password\" ,  \"errorNo\" : \"403\"  }"  );
       }
 
       ;

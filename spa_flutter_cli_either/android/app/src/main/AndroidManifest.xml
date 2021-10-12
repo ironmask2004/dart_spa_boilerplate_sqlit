@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.spa_flutter_cli">
+    package="com.example.spa_flutter_cli_either">
    <application
-        android:label="spa_flutter_cli"
+        android:label="spa_flutter_cli_either"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
