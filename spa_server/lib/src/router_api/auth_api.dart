@@ -92,7 +92,7 @@ class AuthApi {
       final hashedPassword = hashPassword(password, user['salt']);
       if (hashedPassword != user['password']) {
         return Response.forbidden(
-            "{ \"error\" : \"Incorrect user and/or password\" ,  \"errorNo\" : \"403\"  }"  );
+            "{ \"error\" : \"Incorrect user and/or password\" ,  \"errorNo\" : \"403\"  }");
       }
 
       ;
@@ -122,7 +122,7 @@ class AuthApi {
       final auth = req.context['authDetails'];
       if (auth == null) {
         return Response.forbidden(
-            '"{ \"error\" : \"Not authorised to perform this operation." }"');
+            '"{ \"error\" : \"Not authorised to perform this operation."  ,  \"errorNo\" : \"403\" }");');
       }
 
       try {

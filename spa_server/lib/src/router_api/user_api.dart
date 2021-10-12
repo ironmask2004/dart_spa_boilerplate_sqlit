@@ -12,7 +12,8 @@ class UserApi {
 
       User Curr_user = await User.findById(authDetails.subject.toString(), db);
       print("founded_user------:" + Curr_user.email!);
-      return Response.ok('{ "email": "${Curr_user.email}" }', headers: {
+      //return Response.ok('{ "email": "${Curr_user.email}" }'
+      return Response.ok(Curr_user.toJson().toString(), headers: {
         'content-type': 'application/json',
       });
     });

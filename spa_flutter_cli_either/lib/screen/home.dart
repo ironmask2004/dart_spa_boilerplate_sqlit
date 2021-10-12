@@ -14,6 +14,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print('logout ' + User.id!);
     final dartz.Either<ApiResponse, String> userInfo =
         await logOutUser(User.id!);
+
     userInfo.fold((left) {
       showInSnackBar(context, (left.ApiError as ApiError).error);
     }, (right) async {
@@ -49,10 +50,5 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ));
-  }
-
-  void showInSnackBar(BuildContext context, String error) {
-    final snackBar = SnackBar(content: Text(error));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

@@ -24,7 +24,7 @@ class User {
   User.fromJson(dynamic _json) {
     print('from Jeson ' + _json.toString());
     // print('id:' + _json['id']);
-    _id = json.decode(_json)['id'];
+    _id = json.decode(_json)['id'].toString();
     //   print('email:' + _json['email']);
     _email = json.decode(_json)['email'];
     //   print('password:' + _json['password']);

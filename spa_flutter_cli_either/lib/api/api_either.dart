@@ -16,11 +16,14 @@ Future<Either<ApiResponse, User>> getUserInfo(String userId) async {
       'accept': 'application/json',
       'authorization': 'Bearer $userId'
     };
+    print(_headers.toString());
     final client = http.Client();
+    print('kkkkkkkkkkkkk0000000000000000000kkkkkkkkkkkkkkk');
     final http.Response response = await client.get(url, headers: _headers);
     final _response = response.statusCode;
-
+    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     if (_response == 200) {
+      print('Get user info444444444444444444444:' + response.body.toString());
       _apiResponse.Data = User.fromJson(response.body);
       _apiResponse.ApiError = ApiError.fromJson(
           {"error": "Get User Info Success", "errorNo": "200"});
@@ -29,10 +32,8 @@ Future<Either<ApiResponse, User>> getUserInfo(String userId) async {
       _apiResponse.ApiError = ApiError(
           error: json.decode(response.body), errorNo: _response.toString());
     }
-  } on SocketException {
-    _apiResponse.ApiError = ApiError(
-        error: "Server SocketException error. Please retry",
-        errorNo: "1999991");
+  } catch (err) {
+    _apiResponse.ApiError = ApiError(error: err.toString(), errorNo: "199991");
   }
   return left(_apiResponse);
 }

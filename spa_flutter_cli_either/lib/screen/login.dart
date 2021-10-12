@@ -132,9 +132,4 @@ class Login extends StatelessWidget {
         context, '/home', ModalRoute.withName('/home'),
         arguments: (userIfo));
   }
-
-  void showInSnackBar(BuildContext context, String error) {
-    final snackBar = SnackBar(content: Text(error));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 }
