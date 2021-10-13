@@ -118,10 +118,10 @@ class AuthApi {
         print('----------end Login Request--------------');
 
         return Response.internalServerError(
-            body: "{ \"error\" : \"" +
-                'There was a problem logging you in. Please try again.' +
-                e.toString() +
-                "\" , \"errorNo\" : \"199991\" }");
+            body:
+                '{ \"error\" : \" There was a problem logging you in. Please try again.\" ' +
+                    e.toString() +
+                    '\" , \"errorNo\" : \"199991\" }');
       }
     });
 
@@ -137,11 +137,11 @@ class AuthApi {
       } catch (e) {
         return Response.internalServerError(
             body:
-                "{ \"error\" : \"There was an issue logging out. Please check and try again.\"   ,  \"errorNo\" : \"199991\" }");
+                '{ \"error\" : \"There was an issue logging out. Please check and try again.\"   ,  \"errorNo\" : \"199991\" }');
       }
 
       return Response.ok(
-          "{ \"error\" : \"Successfully Loggedout user\"   ,  \"errorNo\" : \"200\" }");
+          '{ \"error\" : \"Successfully Loggedout user\"   ,  \"errorNo\" : \"200\" }');
     });
 
     router.post('/refreshToken', (Request req) async {

@@ -113,19 +113,28 @@ class Login extends StatelessWidget {
       } catch (err) {
         print('Error connectiing to server ' + err.toString());
 
-        showInSnackBar(context, 'Error connectiing to server');
+        showInSnackBar(context, err.toString());
       }
     }
   }
 
   void _saveAndRedirectToHome(BuildContext context, User userIfo) async {
-    print('>> _saveAndRedirectToHome: userToken:' + User.token!);
+    print('>> _saveAndRedirectToHome: userToken:' +
+        User.token! +
+        '\\n refreshToken: ' +
+        User.refreshToken!);
 
-    final String? _usertoken = User.token;
+    //final String? _usertoken = User.token;
 
     await MySharedPreferences.instance.setStringValue('token', User.token!);
     await MySharedPreferences.instance
         .setStringValue('refreshToken', User.refreshToken!);
+
+    print('User.token : ========== ' +
+        await MySharedPreferences.instance.getStringValue('token'));
+
+    print('User.token : ========== ' +
+        await MySharedPreferences.instance.getStringValue('refreshToken'));
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName('/home'),

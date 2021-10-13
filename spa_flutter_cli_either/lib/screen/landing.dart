@@ -60,7 +60,7 @@ class _LandingState extends State<Landing> {
       } catch (err) {
         print('Error connectiing to server ' + err.toString());
 
-        showInSnackBar(context, 'Error connectiing to server');
+        showInSnackBar(context, err.toString());
       }
     }
   }
