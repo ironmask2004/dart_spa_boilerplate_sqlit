@@ -20,4 +20,3 @@ export 'package:spa_flutter_cli_either/utilitly/sharedpref.dart';
 export 'package:spa_flutter_cli_either/api/api_either.dart';
 
 // export 'package:dartz/dartz.dart' hide State;
-

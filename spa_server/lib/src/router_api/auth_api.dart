@@ -51,7 +51,8 @@ class AuthApi {
         print(' error while adding user  ' + error.toString());
         return Response(HttpStatus.badRequest, body: 'error while adding user');
       }
-      return Response.ok('Successfully registered user');
+      return Response.ok(
+          "{ \"error\" : \"Successfully registered user\"   ,  \"errorNo\" : \"200\" }");
     });
 
     ///------ LOGiN
@@ -114,7 +115,7 @@ class AuthApi {
             body: "{ \"error\" : \"" +
                 'There was a problem logging you in. Please try again.' +
                 e.toString() +
-                "\" }");
+                "\" , \"errorNo\" : \"199991\" }");
       }
     });
 
@@ -130,10 +131,11 @@ class AuthApi {
       } catch (e) {
         return Response.internalServerError(
             body:
-                'There was an issue logging out. Please check and try again.');
+                "{ \"error\" : \"There was an issue logging out. Please check and try again.\"   ,  \"errorNo\" : \"199991\" }");
       }
 
-      return Response.ok('Successfully logged out');
+      return Response.ok(
+          "{ \"error\" : \"Successfully Loggedout user\"   ,  \"errorNo\" : \"200\" }");
     });
 
     router.post('/refreshToken', (Request req) async {
@@ -170,7 +172,7 @@ class AuthApi {
       } catch (e) {
         return Response.internalServerError(
             body:
-                'There was a problem creating a new token. Please try again.' +
+                "{ \"error\" : \"'There was a problem creating a new token. Please try again.'\"   ,  \"errorNo\" : \"199991\" }" +
                     e.toString());
       }
     });

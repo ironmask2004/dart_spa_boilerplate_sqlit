@@ -7,29 +7,33 @@ import 'package:spa_flutter_cli_either/exp_library.dart';
 import 'package:http/http.dart' as http;
 
 class User {
-  User._User({
-    String? id,
-    String? email,
-    String? password,
-    String? userType,
-  }) {
+  User._User(
+      {String? id,
+      String? email,
+      String? password,
+      String? userType,
+      String refreshToken,
+      String token}) {
     _id = id;
     _email = email;
     _password = password;
     _userType = (userType == null ? 'User' : userType);
+    _refreshToken = refreshToken;
+    _token = token;
   }
 
   // User(){ }
 
   User.fromJson(dynamic _json) {
     print('from Jeson ' + _json.toString());
-    // print('id:' + _json['id']);
     _id = json.decode(_json)['id'].toString();
-    //   print('email:' + _json['email']);
     _email = json.decode(_json)['email'];
-    //   print('password:' + _json['password']);
     _password = json.decode(_json)['password'];
     _userType = 'user'; // json['userType'];
+    _refreshToken = json.decode(_json)['refreshToken'];
+    _token = json.decode(_json)['token'];
+
+    print('User from Json: ' + User.toJson().toString());
     print('end from jeson');
   }
 
@@ -44,14 +48,22 @@ class User {
   static String? _email;
   static String? _password;
   static String? _userType;
+  static String? _refreshToken;
+  static String? _token;
 
   static String? get id => _id;
   static String? get email => _email;
   static String? get password => _password;
   static String? get userType => _userType;
+  static String? get refreshToken => _refreshToken;
+  static String? get token => _token;
 
-  static void set id(String? id) {
-    _id = id;
+  static void set refreshToken(String? refreshToken) {
+    _refreshToken = refreshToken;
+  }
+
+  static void set token(String? id) {
+    _token = token;
   }
 
   static void set email(String? email) {
@@ -72,6 +84,8 @@ class User {
     map['email'] = _email;
     map['password'] = _password;
     map['userType'] = _userType;
+    map['refreshToken'] = _refreshToken;
+    map['token'] = _token;
     return map;
   }
 }

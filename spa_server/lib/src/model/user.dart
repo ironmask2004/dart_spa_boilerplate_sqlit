@@ -17,7 +17,6 @@ class User {
     _salt = salt;
   }
 
-
   User.fromJson(dynamic json) {
     _id = json['id'];
     _email = json['email'];
@@ -44,14 +43,16 @@ class User {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['email'] = _email;
-    map['password'] = _password;
-    map['salt'] = _salt;
+    map["'id'"] = "\"" + _id! + "\"";
+    map["'email'"] = "\"" + _email! + "\"";
+    map["'password'"] = "\"" + _password! + "\"";
+    map["'salt'"] = "\"" + _salt! + "\"";
+    map["'error'"] = "\"" + 'Suucess' + "\"";
+    map["'errorNo'"] = "\"" + '200' + "\"";
     return map;
   }
 
- static Future<User> findById(String id, Database db) async {
+  static Future<User> findById(String id, Database db) async {
     return (await findUserByID(id, db));
   }
 }

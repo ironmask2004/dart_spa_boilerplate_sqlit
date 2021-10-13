@@ -21,6 +21,7 @@ Future<Either<ApiResponse, User>> getUserInfo(String userId) async {
     print('kkkkkkkkkkkkk0000000000000000000kkkkkkkkkkkkkkk');
     final http.Response response = await client.get(url, headers: _headers);
     final _response = response.statusCode;
+    print(response.body.toString());
     print('kkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     if (_response == 200) {
       print('Get user info444444444444444444444:' + response.body.toString());

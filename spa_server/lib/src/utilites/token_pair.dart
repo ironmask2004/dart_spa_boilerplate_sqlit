@@ -7,5 +7,7 @@ class TokenPair {
   Map<String, dynamic> toJson() => {
         'token': idToken,
         'refreshToken': refreshToken,
+        'error': 'Suucess',
+        'errorNo': '200'
       };
 }
