@@ -43,12 +43,13 @@ class User {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map["'id'"] = "\"" + _id! + "\"";
-    map["'email'"] = "\"" + _email! + "\"";
-    map["'password'"] = "\"" + _password! + "\"";
-    map["'salt'"] = "\"" + _salt! + "\"";
-    map["'error'"] = "\"" + 'Suucess' + "\"";
-    map["'errorNo'"] = "\"" + '200' + "\"";
+    map["\"id\""] = "\"" + _id! + "\"";
+    //map["id"] = _id!;
+    map["\"email\""] = "\"" + _email! + "\"";
+    map["\"password\""] = "\"" + _password! + "\"";
+    map["\"salt\""] = "\"" + _salt! + "\"";
+    map["\"error\""] = "\"" + 'Suucess' + "\"";
+    map["\"errorNo\""] = "\"" + '200' + "\"";
     return map;
   }
 

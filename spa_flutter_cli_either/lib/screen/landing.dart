@@ -9,7 +9,7 @@ class Landing extends StatefulWidget {
 }
 
 class _LandingState extends State<Landing> {
-  String _userId = "";
+  String _userToken = "";
 
   @override
   void initState() {
@@ -20,14 +20,16 @@ class _LandingState extends State<Landing> {
   _loadUserInfo() async {
     try {
       print('UUUUUUUUUU---------------------');
-      User.id = await MySharedPreferences.instance.getStringValue('userId');
-      print('UUUUUUUUUUUUUUUUUUUUUUUUUUUUU' + User.id!);
-      _userId = User.id!;
+      User.token = await MySharedPreferences.instance.getStringValue('token');
+      User.refreshToken =
+          await MySharedPreferences.instance.getStringValue('refreshToken');
+      print('User.token : ========== ' + User.token!);
+      _userToken = User.token!;
     } catch (err) {
       print('Err Getting saved user id');
     }
 
-    if (_userId == "") {
+    if (_userToken == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
     } else {
@@ -37,7 +39,7 @@ class _LandingState extends State<Landing> {
       try {
         print('1111111111111111111111111');
         final dartz.Either<ApiResponse, User> _userInfo =
-            await getUserInfo(_userId);
+            await getUserInfo(_userToken);
         print('2222222222222222222222222');
 
         _userInfo.fold((left) {
@@ -46,7 +48,7 @@ class _LandingState extends State<Landing> {
           showInSnackBar(context, (left.ApiError as ApiError).error);
         }, (right) {
           print('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR');
-          User.id = _userId;
+          User.token = _userToken;
           print("goooooo HOOOOOOOOOOOOOOOme ");
           Navigator.pushNamedAndRemoveUntil(
               context, '/home', ModalRoute.withName('/home'),

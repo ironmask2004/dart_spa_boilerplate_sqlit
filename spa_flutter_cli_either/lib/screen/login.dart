@@ -119,14 +119,13 @@ class Login extends StatelessWidget {
   }
 
   void _saveAndRedirectToHome(BuildContext context, User userIfo) async {
-    print('>> _saveAndRedirectToHome: UserId:' +
-        User.id!); // User.id = _apiResponse.Data.id;
+    print('>> _saveAndRedirectToHome: userToken:' + User.token!);
 
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? _usertoken = User.token;
 
-    final String? _userId = User.id;
-//    await prefs.setString("userId", _userId!);
-    await MySharedPreferences.instance.setStringValue('userId', _userId!);
+    await MySharedPreferences.instance.setStringValue('token', User.token!);
+    await MySharedPreferences.instance
+        .setStringValue('refreshToken', User.refreshToken!);
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName('/home'),

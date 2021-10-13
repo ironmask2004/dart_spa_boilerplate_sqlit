@@ -36,7 +36,7 @@ class MySharedPreferences {
     print('------------------------------');
 
     if (Platform.isLinux) {
-      print("LILLLLLLLLLLLLLLLLLLLLLLLux");
+      print("LILLLLLLLLLLLLLLLLLLLLLLLux" + key);
       String v1 = await storage.read(key: key, lOptions: LinuxOptions()) ?? "";
       print(
           'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv' +

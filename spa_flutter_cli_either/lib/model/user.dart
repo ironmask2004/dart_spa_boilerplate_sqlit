@@ -12,8 +12,8 @@ class User {
       String? email,
       String? password,
       String? userType,
-      String refreshToken,
-      String token}) {
+      String? refreshToken,
+      String? token}) {
     _id = id;
     _email = email;
     _password = password;
@@ -25,16 +25,38 @@ class User {
   // User(){ }
 
   User.fromJson(dynamic _json) {
-    print('from Jeson ' + _json.toString());
+    print('from Jeson===== ' + _json.toString());
     _id = json.decode(_json)['id'].toString();
     _email = json.decode(_json)['email'];
     _password = json.decode(_json)['password'];
     _userType = 'user'; // json['userType'];
-    _refreshToken = json.decode(_json)['refreshToken'];
     _token = json.decode(_json)['token'];
+    _refreshToken = json.decode(_json)['refreshToken'];
 
-    print('User from Json: ' + User.toJson().toString());
-    print('end from jeson');
+    print('User from Json------------: ' + User.toJson().toString());
+    print('end from jeson------------');
+  }
+  User.fromJsonwithoutToken(dynamic _json, String token, String refreshToken) {
+    print('from Jeson-=-=-=-=-=-= ' + _json.toString());
+
+    print(_json.runtimeType);
+
+    //print(json.decode(_json)['id'].toString());
+    print('ttotototken refresh' + refreshToken);
+    print('totototoken:' + token);
+    _id = json.decode(_json)['id'].toString();
+    print('id:' + _id!);
+    _email = json.decode(_json)['email'];
+    print('email:' + _email!);
+    _password = json.decode(_json)['password'];
+    print('passwrod:' + _password!);
+    ;
+    _userType = 'user'; // json['userType'];
+    _refreshToken = refreshToken;
+    _token = token;
+
+    print('fromJsonwithoutToken : ' + User.toJson().toString());
+    print('fromJsonwithoutToken');
   }
 
   User._fromJson(dynamic json) {
@@ -42,6 +64,7 @@ class User {
     _email = json['email'];
     _password = json['password'];
     _userType = 'user'; // json['userType'];
+    print('User to Json:' + User.toJson().toString());
   }
 
   static String? _id;
@@ -58,11 +81,15 @@ class User {
   static String? get refreshToken => _refreshToken;
   static String? get token => _token;
 
+  static void set id(String? id) {
+    _id = id;
+  }
+
   static void set refreshToken(String? refreshToken) {
     _refreshToken = refreshToken;
   }
 
-  static void set token(String? id) {
+  static void set token(String? token) {
     _token = token;
   }
 
@@ -86,6 +113,7 @@ class User {
     map['userType'] = _userType;
     map['refreshToken'] = _refreshToken;
     map['token'] = _token;
+    print('Userr to Jeson:' + map.toString());
     return map;
   }
 }

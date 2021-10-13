@@ -7,14 +7,14 @@ curl --location --request GET 'localhost:9093/users/' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzIyNTQzMjksImV4cCI6MTYzMjI1NDQ1OSwic3ViIjoiNjE0OGRmM2M1NWE5NjQ2NzdiNDMxOGZiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdCIsImp0aSI6IjMyYTBmODllLTY3YTItNDgyZC1iZmUzLTMzMzQzYjRjNjMwYiJ9.KQyxOPodML_Zqam7LKGauYCJ0IBqlXKCfjiuGu3WIII'
  */
 
-Future<Either<ApiResponse, User>> getUserInfo(String userId) async {
+Future<Either<ApiResponse, User>> getUserInfo(String userToken) async {
   ApiResponse _apiResponse = ApiResponse();
   try {
     var url = Uri.http(Env.baseUrl, "users/info/");
     Map<String, String> _headers = {
       'content-type': 'application/json',
       'accept': 'application/json',
-      'authorization': 'Bearer $userId'
+      'authorization': 'Bearer $userToken'
     };
     print(_headers.toString());
     final client = http.Client();
@@ -25,7 +25,11 @@ Future<Either<ApiResponse, User>> getUserInfo(String userId) async {
     print('kkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     if (_response == 200) {
       print('Get user info444444444444444444444:' + response.body.toString());
-      _apiResponse.Data = User.fromJson(response.body);
+      print('Token:' + User.token! + 'refreshToken:' + User.refreshToken!);
+      _apiResponse.Data = User.fromJsonwithoutToken(
+          response.body, User.token!, User.refreshToken!);
+
+      print(_apiResponse.Data.toString());
       _apiResponse.ApiError = ApiError.fromJson(
           {"error": "Get User Info Success", "errorNo": "200"});
       return right(_apiResponse.Data as User);
@@ -58,8 +62,7 @@ Future<Either<ApiResponse, User>> loginUser(
         response.statusCode.toString());
     if (response.statusCode == 200) {
       final String _token = json.decode(response.body)['token'];
-      _apiResponse.Data = User.fromJson(
-          '{\"id\": \"$_token\", \"email\": \"$email\" ,  \"password\": \"$password\" }');
+      _apiResponse.Data = User.fromJson(response.body);
       _apiResponse.ApiError = ApiError(error: "Login suscess", errorNo: "200");
       return right(_apiResponse.Data as User);
     } else {
@@ -73,14 +76,14 @@ Future<Either<ApiResponse, User>> loginUser(
   return left(_apiResponse);
 }
 
-Future<Either<ApiResponse, String>> logOutUser(String userId) async {
+Future<Either<ApiResponse, String>> logOutUser(String userToken) async {
   ApiResponse _apiResponse = ApiResponse();
   try {
     var url = new Uri.http(Env.baseUrl, "users/logout");
     Map<String, String> _headers = {
       'content-type': 'application/json',
       'accept': 'application/json',
-      'authorization': 'Bearer $userId'
+      'authorization': 'Bearer $userToken'
     };
     print(url.toString() + " Headrs:  " + _headers.toString());
     final client = http.Client();

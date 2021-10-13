@@ -11,16 +11,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void _handleLogout() async {
-    print('logout ' + User.id!);
+    print('logout ' + User.token!);
     final dartz.Either<ApiResponse, String> userInfo =
-        await logOutUser(User.id!);
+        await logOutUser(User.token!);
 
     userInfo.fold((left) {
       showInSnackBar(context, (left.ApiError as ApiError).error);
     }, (right) async {
       showInSnackBar(context, ("LogOut Successs!!"));
 
-      await MySharedPreferences.instance.removeValue('userId');
+      await MySharedPreferences.instance.removeValue('token');
 
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));

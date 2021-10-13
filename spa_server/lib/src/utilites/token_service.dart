@@ -1,5 +1,3 @@
-
-
 import 'package:spa_server/spa_server.dart';
 
 class TokenService {
@@ -8,7 +6,7 @@ class TokenService {
   final RedisConnection db;
   final String secret;
 
-   static late  Command _cache;
+  static late Command _cache;
   final String _prefix = 'token';
 
   Future<void> start(String host, int port) async {
@@ -20,7 +18,7 @@ class TokenService {
     final token =
         generateJwt(userId, 'http://localhost', secret, jwtId: tokenId);
 
-    final refreshTokenExpiry = Duration(seconds: 160);
+    final refreshTokenExpiry = Duration(seconds: 1000);
     final refreshToken = generateJwt(
       userId,
       'http://localhost',
