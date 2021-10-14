@@ -18,9 +18,19 @@ class _MyHomePageState extends State<MyHomePage> {
     userInfo.fold((left) {
       showInSnackBar(context, (left.ApiError as ApiError).error);
     }, (right) async {
-      showInSnackBar(context, ("LogOut Successs!!"));
+      print('Logout User.Token ' + User.token!);
+      print('Logout User.refreshToken ' + User.refreshToken!);
+
+      print('log out User.token from Storage  : ========== ' +
+          await MySharedPreferences.instance.getStringValue('token'));
+
+      print('logout User.refreshToken from Storage  : ========== ' +
+          await MySharedPreferences.instance.getStringValue('refreshToken'));
 
       await MySharedPreferences.instance.removeValue('token');
+      await MySharedPreferences.instance.removeValue('refreshToken');
+
+      showInSnackBar(context, ("LogOut Successs!!"));
 
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));

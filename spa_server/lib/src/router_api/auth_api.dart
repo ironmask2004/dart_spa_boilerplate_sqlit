@@ -107,9 +107,10 @@ class AuthApi {
         final tokenPair = await tokenService.createTokenPair(userId);
         user['token'] = tokenPair.toJson()['token'];
         user['refreshToken'] = tokenPair.toJson()['refreshToken'];
+        print(tokenPair.toJson().toString());
         user["'error'"] = "\"" + 'Suucess' + "\"";
         user["'errorNo'"] = "\"" + '200' + "\"";
-        print(user.toString());
+        print("==============================" + user.toString());
 
         return Response.ok(json.encode(user), headers: {
           HttpHeaders.contentTypeHeader: ContentType.json.mimeType,

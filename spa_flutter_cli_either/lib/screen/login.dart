@@ -133,7 +133,7 @@ class Login extends StatelessWidget {
     print('User.token : ========== ' +
         await MySharedPreferences.instance.getStringValue('token'));
 
-    print('User.token : ========== ' +
+    print('User.refreshToken : ========== ' +
         await MySharedPreferences.instance.getStringValue('refreshToken'));
 
     Navigator.pushNamedAndRemoveUntil(

@@ -34,19 +34,26 @@ class MySharedPreferences {
     print(_isLinux.runtimeType.toString());
 
     print('------------------------------');
+    try {
+      if (Platform.isLinux) {
+        print("LILLLLLLLLLLLLLLLLLLLLLLLux" + key);
 
-    if (Platform.isLinux) {
-      print("LILLLLLLLLLLLLLLLLLLLLLLLux" + key);
-      String v1 = await storage.read(key: key, lOptions: LinuxOptions()) ?? "";
-      print(
-          'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv' +
-              v1);
-      print(
-          'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
-      return (v1);
-    } else {
-      print('=======================================NNNNNNNot LINUX');
-      return (await storage.read(key: key)) ?? "";
+        String v1 =
+            await storage.read(key: key, lOptions: LinuxOptions()) ?? "";
+
+        print(
+            'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv' +
+                v1);
+        print(
+            'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+        return (v1);
+      } else {
+        print('=======================================NNNNNNNot LINUX');
+        return (await storage.read(key: key)) ?? "";
+      }
+    } catch (err) {
+      print('Error Getting secure storage: ' + err.toString());
+      return ("");
     }
   }
 
